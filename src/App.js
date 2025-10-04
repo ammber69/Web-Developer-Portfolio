@@ -85,25 +85,6 @@ function App() {
   const [activeLevel, setActiveLevel] = useState(0);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
 
-  const showProgress = (element, level) => {
-    const progressDiv = document.createElement("div");
-    progressDiv.className = "skill-progress";
-    progressDiv.innerHTML = `
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: ${level}%"></div>
-      </div>
-      <span class="progress-text">${level}%</span>
-    `;
-    element.appendChild(progressDiv);
-  };
-
-  const hideProgress = (element) => {
-    const progressDiv = element.querySelector(".skill-progress");
-    if (progressDiv) {
-      progressDiv.remove();
-    }
-  };
-
   const handleSkillMouseOver = (index, level) => {
     setActiveSkill(index);
     setActiveLevel(level);
@@ -224,9 +205,9 @@ function App() {
     <div className="container">
       {/* Navigation */}
       <nav className="nav">
-        <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
-        <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
-        <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+        <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
+        <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
+        <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
       </nav>
 
       {/* Hero Section */}
