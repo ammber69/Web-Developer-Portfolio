@@ -1,546 +1,302 @@
-// App.jsx
-import React, { useState, useEffect, useRef } from "react";
-import { ExternalLink, Github, ChevronLeft, ChevronRight, StickyNote } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { ExternalLink, Github, ChevronLeft, ChevronRight, X, Code, Terminal, Braces, Menu } from 'lucide-react';
+import { projectsData, skills } from './data';
 import "./App.css";
-
-const projectsData = [
-  {
-    id: 1,
-    title: 'Modelo Predictivo Dengue',
-    description: 'Sistema de predicción para detección temprana de brotes de dengue en México, con análisis de datos epidemiológicos.',
-    image: 'https://via.placeholder.com/400x250',
-    technologies: ['Python', 'Pandas', 'Scikit-learn', 'React'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 2,
-    title: 'Plataforma de Donaciones',
-    description: 'Aplicación web administrativa para la gestión de donaciones sanguíneas con APIs REST e integración de servicios externos.',
-    images: [
-      '/3.png',
-      '/4.png',
-        '/6.png',
-         '/7.png',
-          '/8.png',
-           '/9.png',
-            '/10.png',
-             '/12.png',
-              '/13.png',
-               '/14.png'
-    ],
-    technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 3,
-    title: 'Gestión de Ventas Minoristas',
-    description: 'Aplicación de gestión de ventas para una franquicia de tiendas con módulos de seguridad y control de acceso.',
-    images: [
-      '/20.png',
-      '/21.png',
-      '/22.png',
-      '/25.png',
-      '/26.png',
-    ],
-    technologies: ['Java', 'Spring Boot', 'MySQL', 'React'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 4,
-    title: 'Punto de Venta NFC',
-    description: 'Sistema integral de punto de venta con gestión de almacén y fidelización de clientes mediante dispositivos NFC.',
-    images: [
-      '/1.png',
-      '/2.png',
-     
-    ],
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'NFC'],
-    liveUrl: '#',
-    githubUrl: '#'
-  }
-];
-
-const skills = [
-  { name: 'JavaScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', level: 90 },
-  { name: 'Python', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', level: 85 },
-  { name: 'Java', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', level: 80 },
-  { name: 'C++', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg', level: 75 },
-  { name: 'React', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', level: 95 },
-  { name: 'Angular', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg', level: 80 },
-  { name: 'Ionic', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ionic/ionic-original.svg', level: 75 },
-  { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', level: 90 },
-  { name: 'Docker', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', level: 70 },
-  { name: 'VS Code', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', level: 95 }
-];
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const intervalRef = useRef(null);
-  const [activeSkill, setActiveSkill] = useState(null);
-  const [activeLevel, setActiveLevel] = useState(0);
-  const [showInfoPopup, setShowInfoPopup] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleSkillMouseOver = (index, level) => {
-    setActiveSkill(index);
-    setActiveLevel(level);
-  };
-
-  const handleSkillMouseOut = () => {
-    setActiveSkill(null);
-    setActiveLevel(0);
-  };
-
-  // Funciones del carrusel de proyectos
+  // Manejar View Transitions al abrir un proyecto
   const handleProjectClick = (project) => {
-    setSelectedProject(project);
-    // Detener el carrusel automático cuando se abre el modal
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (!document.startViewTransition) {
+      setSelectedProject(project);
+      setCurrentImageIndex(0);
+      return;
     }
+
+    document.startViewTransition(() => {
+      setSelectedProject(project);
+      setCurrentImageIndex(0);
+    });
   };
 
+  // Manejar View Transitions al cerrar un proyecto
   const closeModal = () => {
-    setSelectedProject(null);
-    setCurrentImageIndex(0);
-    // Reanudar el carrusel automático cuando se cierra el modal
-    startAutoRotate();
-  };
-
-  const startAutoRotate = () => {
-    intervalRef.current = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === projectsData.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 10000); // 10 segundos
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === projectsData.length - 1 ? 0 : prevIndex + 1
-    );
-    // Reiniciar el conteo
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      startAutoRotate();
+    if (!document.startViewTransition) {
+      setSelectedProject(null);
+      return;
     }
+
+    document.startViewTransition(() => {
+      setSelectedProject(null);
+    });
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? projectsData.length - 1 : prevIndex - 1
-    );
-    // Reiniciar el conteo
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      startAutoRotate();
-    }
-  };
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-    // Reiniciar el conteo
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      startAutoRotate();
-    }
-  };
-
-  // Funciones para navegar entre imágenes
-  const nextImage = () => {
+  const nextImage = (e) => {
+    e.stopPropagation();
     if (selectedProject && selectedProject.images) {
-      setCurrentImageIndex((prevIndex) =>
-        prevIndex === selectedProject.images.length - 1 ? 0 : prevIndex + 1
+      setCurrentImageIndex((prev) =>
+        prev === selectedProject.images.length - 1 ? 0 : prev + 1
       );
     }
   };
 
-  const prevImage = () => {
+  const prevImage = (e) => {
+    e.stopPropagation();
     if (selectedProject && selectedProject.images) {
-      setCurrentImageIndex((prevIndex) =>
-        prevIndex === 0 ? selectedProject.images.length - 1 : prevIndex - 1
+      setCurrentImageIndex((prev) =>
+        prev === 0 ? selectedProject.images.length - 1 : prev - 1
       );
     }
   };
 
-  const goToImage = (index) => {
-    setCurrentImageIndex(index);
-  };
-
-  // Funciones de navegación
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
+    setIsMobileMenuOpen(false);
   };
 
-  // Auto-rotate carousel
+  // Prevenir scroll en body cuando modal está abierto
   useEffect(() => {
-    startAutoRotate();
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      document.body.style.overflow = 'auto';
     };
-  }, []);
-
-  // Manejar autoplay de videos
-  useEffect(() => {
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-      video.muted = true;
-      video.play().catch(error => {
-        console.log('Video autoplay blocked:', error);
-      });
-    });
-  }, [currentIndex, selectedProject]);
+  }, [selectedProject]);
 
   return (
-    <div className="container">
+    <div className="app-container">
       {/* Navigation */}
-      <nav className="nav">
-        <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
-        <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
-        <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+      <nav className="nav-bar (glass)">
+        <div className="nav-content">
+          <div className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-color)' }}>
+            <Code size={28} strokeWidth={2.5} />
+            <span className="logo-text">
+              Antonio <span className="logo-lastname">Monterrosas</span>
+            </span>
+          </div>
+          <div className="nav-links desktop-only">
+            <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
+            <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
+            <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+          </div>
+          
+          <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="hero" className="hero">
-        <div className="hero-content">
-          <h1>
-            Hola, soy Antonio,
-            <br />
-           Ingeniero de Software.
-          </h1>
-          <p>
-            Apasionado por la tecnología y el aprendizaje constante. 
-            Me gusta crear soluciones simples que aporten valor real, combinando creatividad con disciplina. 
-            Siempre buscando nuevas formas de crecer y compartir conocimiento.
-          </p>
-          <a
-  href="/MonterrosasSolisJoseAntonioCV.pdf"
-  className="download-btn"
-  download="MonterrosasSolisJoseAntonioCV.pdf"
->
-  Descargar Currículum
-</a>
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-content">
+          <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
+          <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
+          <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
         </div>
-        <div className="hero-image">
-          <img
-            src="/perfil.png"
-            alt="John Profile"
-            className="profile-pic"
-          />
+      </div>
+
+      {/* Hero Section */}
+      <section id="hero" className="hero-section section-padding">
+        <div className="hero-grid">
+          <div className="hero-text">
+            <h1 className="hero-title">
+              Hola, soy Antonio. <br/>
+              <span className="text-gradient">Ingeniero de Software.</span>
+            </h1>
+            <p className="hero-subtitle">
+              Diseño y construyo soluciones digitales premium. Combinando creatividad, código limpio y experiencias de usuario excepcionales.
+            </p>
+            <div className="hero-actions">
+              <a href="/MonterrosasSolisJoseAntonioCV.pdf" className="btn-primary" download>
+                Descargar CV
+              </a>
+              <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-secondary">
+                Ver Proyectos
+              </a>
+            </div>
+          </div>
+          <div className="hero-visual">
+            <div className="hero-avatar-container">
+              <img src="/perfil.png" alt="Antonio" className="hero-avatar" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="blog-section">
-        <div className="blog-header">
-          <h2>Habilidades y Tecnologías</h2>
-          <p>Tecnologías con las que trabajo para crear soluciones innovadoras</p>
+      <section id="skills" className="skills-section section-padding">
+        <div className="section-header">
+          <h2>Habilidades Técnicas</h2>
+          <p>Herramientas y tecnologías que utilizo para dar vida a las ideas.</p>
         </div>
-        <div className="skills-container">
-          {/* Lenguajes */}
-          <div className="skills-category">
-            <h3>Lenguajes</h3>
-            <div className="skills-grid">
-              {skills.slice(0, 4).map((skill, index) => (
-                <div
-                  className="skill-item"
-                  key={index}
-                  onMouseOver={() => handleSkillMouseOver(index, skill.level)}
-                  onMouseOut={handleSkillMouseOut}
-                >
-                  <img src={skill.img} alt={skill.name} />
-                  <p>{skill.name}</p>
-                  {activeSkill === index && (
-                    <div className="skill-progress">
-                      <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${activeLevel}%` }}></div>
-                      </div>
-                      <span className="progress-text">{activeLevel}%</span>
-                    </div>
-                  )}
-                </div>
-              ))}
+        
+        <div className="skills-bento">
+          {skills.map((skill, index) => (
+            <div key={index} className="skill-card">
+              <div className="skill-icon-wrapper">
+                <img src={skill.img} alt={skill.name} className="skill-icon" />
+              </div>
+              <span className="skill-name">{skill.name}</span>
             </div>
-          </div>
-          {/* Frameworks */}
-          <div className="skills-category">
-            <h3>Frameworks</h3>
-            <div className="skills-grid">
-              {skills.slice(4, 7).map((skill, index) => (
-                <div
-                  className="skill-item"
-                  key={index}
-                  onMouseOver={() => handleSkillMouseOver(index + 4, skill.level)}
-                  onMouseOut={handleSkillMouseOut}
-                >
-                  <img src={skill.img} alt={skill.name} />
-                  <p>{skill.name}</p>
-                  {activeSkill === index + 4 && (
-                    <div className="skill-progress">
-                      <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${activeLevel}%` }}></div>
-                      </div>
-                      <span className="progress-text">{activeLevel}%</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Herramientas */}
-          <div className="skills-category">
-            <h3>Herramientas</h3>
-            <div className="skills-grid">
-              {skills.slice(7).map((skill, index) => (
-                <div
-                  className="skill-item"
-                  key={index}
-                  onMouseOver={() => handleSkillMouseOver(index + 7, skill.level)}
-                  onMouseOut={handleSkillMouseOut}
-                >
-                  <img src={skill.img} alt={skill.name} />
-                  <p>{skill.name}</p>
-                  {activeSkill === index + 7 && (
-                    <div className="skill-progress">
-                      <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${activeLevel}%` }}></div>
-                      </div>
-                      <span className="progress-text">{activeLevel}%</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="projects-section">
-        <div className="projects-header">
-          <div className="projects-header-title-row">
-            <h2>Mis Proyectos</h2>
-            <button
-              className="info-note-btn"
-              onClick={() => setShowInfoPopup(true)}
-              title="Ver nota de confidencialidad"
+      <section id="projects" className="projects-section section-padding">
+        <div className="section-header">
+          <h2>Proyectos Destacados</h2>
+          <p>Una selección de mi trabajo más reciente y relevante.</p>
+        </div>
+
+        <div className="projects-bento-grid">
+          {projectsData.map((project, index) => (
+            <div 
+              key={project.id} 
+              className={`project-card bento-item-${index % 4}`}
+              onClick={() => handleProjectClick(project)}
+              style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-card-bg-${project.id}` }}
             >
-              <StickyNote size={26} />
-            </button>
-          </div>
-          <div className="projects-header-row">
-            <p>Una selección de proyectos que demuestran mis habilidades y experiencia</p>
-            {showInfoPopup && (
-              <div className="info-popup-overlay" onClick={() => setShowInfoPopup(false)}>
-                <div className="info-popup" onClick={e => e.stopPropagation()}>
-                  <button className="info-popup-close" onClick={() => setShowInfoPopup(false)}>×</button>
-                  <h4>Nota de Confidencialidad</h4>
-                  <p>
-                    Los proyectos mostrados en este portafolio corresponden únicamente a la parte que, por contrato, se me permite compartir.<br /><br />
-                    Algunos trabajos completos permanecen privados por confidencialidad empresarial.<br /><br />
-                    Lo que aquí se presenta son fragmentos o esquemas autorizados como evidencia de mi experiencia profesional.
-                  </p>
+              <div className="project-card-image-wrapper">
+                {project.video ? (
+                  <video 
+                    src={project.video} 
+                    className="project-card-image"
+                    autoPlay muted loop playsInline
+                    poster={project.image || (project.images && project.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800'}
+                    style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-media-${project.id}` }}
+                  />
+                ) : (
+                  <img 
+                    src={project.image || (project.images && project.images[0])} 
+                    alt={project.title} 
+                    className="project-card-image"
+                    style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-media-${project.id}` }}
+                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
+                  />
+                )}
+                <div className="project-card-overlay">
+                  <span className="view-project-label">Ver Detalles</span>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-        <div className="carousel-container">
-          <button className="carousel-btn carousel-btn-prev" onClick={prevSlide}>
-            <ChevronLeft size={24} />
-          </button>
-          <div className="carousel-3d">
-            <div className="carousel-track">
-              {(() => {
-                const project = projectsData[currentIndex];
-                return (
-                  <div
-                    key={project.id}
-                    className="project-card carousel-card active"
-                    onClick={() => handleProjectClick(project)}
-                  >
-                    <div className="project-image-container">
-                      {project.title === 'Modelo Predictivo Dengue' ? (
-                        <video
-                          src="/videoDengueScan.mp4"
-                          className="project-image"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="auto"
-                        />
-                      ) : project.images ? (
-                        <div className="image-carousel">
-                          <img
-                            src={project.images[0]}
-                            alt={`Imagen del ${project.title}`}
-                            className="project-image"
-                          />
-                          {project.images.length > 1 && (
-                            <div className="image-indicators">
-                              {project.images.map((_, index) => (
-                                <span
-                                  key={index}
-                                  className={`image-dot ${index === 0 ? 'active' : ''}`}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <img
-                          src={project.image}
-                          alt={`Imagen del ${project.title}`}
-                          className="project-image"
-                        />
-                      )}
-                      <div className="project-overlay">
-                        <div className="project-actions">
-                          <a
-                            href={project.liveUrl}
-                            className="project-action-btn project-live-btn"
-                            onClick={(e) => e.stopPropagation()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink size={20} />
-                          </a>
-                          <a
-                            href={project.githubUrl}
-                            className="project-action-btn project-github-btn"
-                            onClick={(e) => e.stopPropagation()}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Github size={20} />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="project-info">
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <div className="project-technologies">
-                        {project.technologies.map((tech, techIndex) => (
-                          <span key={techIndex} className="tech-badge">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <button className="project-details-btn">
-                        Ver Detalles
-                      </button>
-                    </div>
-                  </div>
-                );
-              })()}
+              <div className="project-card-content">
+                <h3 className="project-card-title" style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-title-${project.id}` }}>
+                  {project.title}
+                </h3>
+                <div className="project-card-tech">
+                  {project.technologies.slice(0, 3).map((tech, i) => (
+                    <span 
+                      key={i} 
+                      className="tech-pill"
+                      style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `tech-pill-${project.id}-${i}` }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 3 && <span className="tech-pill">+{project.technologies.length - 3}</span>}
+                </div>
+              </div>
             </div>
-          </div>
-          <button className="carousel-btn carousel-btn-next" onClick={nextSlide}>
-            <ChevronRight size={24} />
-          </button>
-        </div>
-        {/* Indicadores del carrusel */}
-        <div className="carousel-indicators">
-          {projectsData.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => goToSlide(index)}
-            />
           ))}
         </div>
-        {/* Modal para detalles del proyecto */}
-        {selectedProject && (
-          <div className="project-modal" onClick={closeModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close" onClick={closeModal}>×</button>
-              <h3>{selectedProject.title}</h3>
-              {selectedProject.title === 'Modelo Predictivo Dengue' ? (
-                <video
-                  src="/videoDengueScan.mp4"
-                  className="modal-image"
-                  controls
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  style={{ background: '#000', borderRadius: '12px', marginBottom: '1.5rem' }}
+      </section>
+
+      {/* Detail Modal with View Transitions */}
+      {selectedProject && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div 
+            className="modal-container" 
+            onClick={(e) => e.stopPropagation()}
+            style={{ viewTransitionName: `project-card-bg-${selectedProject.id}` }}
+          >
+            <button className="modal-close-btn" onClick={closeModal}>
+              <X size={24} />
+            </button>
+            
+            <div className="modal-media-section">
+              {selectedProject.video ? (
+                <video 
+                  src={selectedProject.video} 
+                  className="modal-media"
+                  controls autoPlay loop muted playsInline
+                  poster={selectedProject.image || (selectedProject.images && selectedProject.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200'}
+                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
                 />
-              ) : selectedProject.images ? (
-                <div className="modal-image-carousel">
-                  <button className="modal-carousel-btn modal-carousel-prev" onClick={prevImage}>
-                    <ChevronLeft size={20} />
-                  </button>
-                  <img
-                    src={selectedProject.images[currentImageIndex]}
-                    alt={`Imagen ${currentImageIndex + 1} del ${selectedProject.title}`}
-                    className="modal-image"
+              ) : selectedProject.images && selectedProject.images.length > 0 ? (
+                <div className="modal-carousel" style={{ viewTransitionName: `project-media-${selectedProject.id}` }}>
+                  <img 
+                    src={selectedProject.images[currentImageIndex]} 
+                    alt={selectedProject.title} 
+                    className="modal-media"
+                    onError={(e) => { e.target.src = selectedProject.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200' }}
                   />
-                  <button className="modal-carousel-btn modal-carousel-next" onClick={nextImage}>
-                    <ChevronRight size={20} />
-                  </button>
-                  <div className="modal-image-indicators">
-                    {selectedProject.images.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`modal-image-dot ${index === currentImageIndex ? 'active' : ''}`}
-                        onClick={() => goToImage(index)}
-                      />
-                    ))}
-                  </div>
+                  {selectedProject.images.length > 1 && (
+                    <>
+                      <button className="modal-nav-btn prev" onClick={prevImage}><ChevronLeft size={24}/></button>
+                      <button className="modal-nav-btn next" onClick={nextImage}><ChevronRight size={24}/></button>
+                      <div className="modal-indicators">
+                        {selectedProject.images.map((_, i) => (
+                          <div key={i} className={`indicator-dot ${i === currentImageIndex ? 'active' : ''}`} />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="modal-image"
+                <img 
+                  src={selectedProject.image} 
+                  alt={selectedProject.title} 
+                  className="modal-media"
+                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
                 />
               )}
-              <p>{selectedProject.description}</p>
-              <div className="modal-technologies">
-                {selectedProject.technologies.map((tech, index) => (
-                  <span key={index} className="tech-badge">
+            </div>
+
+            <div className="modal-info-section">
+              <h2 className="modal-title" style={{ viewTransitionName: `project-title-${selectedProject.id}` }}>
+                {selectedProject.title}
+              </h2>
+              
+              <div className="modal-tech-list">
+                {selectedProject.technologies.map((tech, i) => (
+                  <span 
+                    key={i} 
+                    className="tech-pill"
+                    style={{ viewTransitionName: `tech-pill-${selectedProject.id}-${i}` }}
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
-              <div className="modal-actions">
-                <a
-                  href={selectedProject.liveUrl}
-                  className="modal-btn modal-live-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink size={16} />
-                  Ver Proyecto
+
+              <p className="modal-description">{selectedProject.description}</p>
+
+              <div className="modal-actions-row">
+                <a href={selectedProject.liveUrl} className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink size={18} /> Visitar Sitio
                 </a>
-                <a
-                  href={selectedProject.githubUrl}
-                  className="modal-btn modal-github-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Github size={16} />
-                  Ver Código
+                <a href={selectedProject.githubUrl} className="btn-secondary modal-btn" target="_blank" rel="noopener noreferrer">
+                  <Github size={18} /> Ver Código
                 </a>
               </div>
             </div>
           </div>
-        )}
-      </section>
+        </div>
+      )}
+      
+      {/* Footer */}
+      <footer className="footer">
+        <p>© {new Date().getFullYear()} Antonio. Construido con React.</p>
+      </footer>
     </div>
   );
 }
