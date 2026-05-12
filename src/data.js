@@ -11,10 +11,11 @@ export const projectsData = [
   },
   {
     id: 102,
-    title: 'Central de Publicidad Nissan',
-    description: 'Solución web en tiempo real para centralizar el control de anuncios en las pantallas de todas las agencias Nissan. Optimiza tiempos de implementación, reduce costos operativos y minimiza errores para mejorar la evaluación en auditorías corporativas.',
+    title: 'Nissan AdControl – Centralized Multi-Agency Advertising Network',
+    description: 'Solución empresarial robusta diseñada para la gestión centralizada y distribución de contenido publicitario en tiempo real para una red de 6 agencias Nissan. Este sistema permite la sincronización instantánea de campañas en pantallas digitales, eliminando la latencia en cambios de precios o promociones y erradicando errores de implementación manual.\n\nImpacto: Centralización total de activos, reducción drástica de costos operativos y eliminación del 100% de errores de publicación manual entre múltiples sucursales.',
     image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000',
-    technologies: ['React', 'Node.js', 'WebSockets', 'Dashboard'],
+    youtubeId: 'kTS8-nAld1I',
+    technologies: ['React', 'Node.js', 'WebSockets', 'Digital Signage', 'Real-Time'],
     liveUrl: '#',
     githubUrl: '#'
   },
