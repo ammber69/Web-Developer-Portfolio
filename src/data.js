@@ -75,10 +75,20 @@ export const projectsData = [
   },
   {
     id: 6,
-    title: 'AI Analytics Dashboard',
-    description: 'Panel de control B2B que ingesta grandes volúmenes de datos para generar visualizaciones interactivas y resúmenes ejecutivos impulsados por modelos de lenguaje.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
-    technologies: ['React', 'D3.js', 'Python', 'OpenAI API'],
+    title: 'Gestión de Servicios TI (GLPI)',
+    description: `Diseño, configuración e implementación desde cero de una plataforma ITSM basada en GLPI para una organización de más de 100 usuarios. El proyecto incluyó catálogo de servicios, gestión de activos, SLAs, flujos de atención y un programa de adopción cultural del sistema.
+
+Logro principal:
+Reducción notable en tiempos de atención a usuarios al pasar de un proceso informal (correo/verbal) a un sistema estructurado con prioridades, SLAs y trazabilidad completa de cada solicitud. (+100 Usuarios atendidos, 3-6 Meses de implementación).
+
+Entregables clave:
+• Catálogo de servicios TI: Definición y clasificación de servicios disponibles.
+• SLAs y tiempos de atención: Reglas de escalamiento, prioridades y medición.
+• Gestión de activos (FusionInventory): Inventario automatizado integrado al sistema.
+• Flujos de soporte: Reglas de asignación automática, categorías y grupos.
+• Capacitación: Talleres para adopción del sistema como canal oficial de soporte.`,
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000',
+    technologies: ['GLPI', 'FusionInventory', 'ITSM', 'SLA', 'Soporte TI'],
     liveUrl: '#',
     githubUrl: '#'
   },
@@ -106,4 +116,5 @@ export const skills = [
   { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', level: 90 },
   { name: 'Análisis de Datos', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg', level: 85 },
   { name: 'SQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', level: 85 },
+  { name: 'Linux', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', level: 80 },
 ];
