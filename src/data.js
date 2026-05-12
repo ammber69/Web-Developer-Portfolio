@@ -22,7 +22,7 @@ export const projectsData = [
     title: 'CheckCore – Centralización de Checadores Nissan Gasme',
     description: 'Sistema web para la gestión centralizada de todos los checadores biométricos de Nissan Gasme. Incluye interfaz moderna e intuitiva, automatización del cálculo de faltas y retardos, dashboards con datos clave para dirección, y un sistema de monitoreo con auto-reparación remota que detecta y corrige anomalías en los dispositivos sin necesidad de intervención física del equipo de soporte.\n\nImpacto: Ahorro significativo de horas de trabajo manual, reducción de errores y eliminación de tiempos muertos por fallas en equipos remotos.',
     image: '/checkcore_preview.png',
-    youtubeId: '2bk9mguZitQ',
+    youtubeId: 'INVFL_my0KA',
     technologies: ['React', 'Node.js', 'Biometrics', 'Automation', 'Monitoring'],
     liveUrl: '#',
     githubUrl: '#'
