@@ -215,7 +215,7 @@ body {
 
 /* Hero Section */
 .hero-section {
-  padding-top: 160px;
+  padding-top: 100px;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -254,16 +254,16 @@ body {
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 40px;
   align-items: center;
 }
 
 .hero-title {
-  font-size: clamp(3rem, 8vw, 5rem);
-  line-height: 1.05;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  line-height: 1.1;
   font-weight: 800;
   letter-spacing: -0.04em;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .text-gradient {
@@ -274,11 +274,11 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--text-secondary);
-  margin-bottom: 40px;
-  max-width: 500px;
-  line-height: 1.4;
+  margin-bottom: 32px;
+  max-width: 550px;
+  line-height: 1.5;
 }
 
 .hero-actions {
@@ -289,7 +289,7 @@ body {
 .hero-avatar-container {
   position: relative;
   width: 100%;
-  max-width: 500px;
+  max-width: 440px;
   aspect-ratio: 1;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
