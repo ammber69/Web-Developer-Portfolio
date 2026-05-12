@@ -36,18 +36,20 @@ function App() {
 
   const nextImage = (e) => {
     e.stopPropagation();
-    if (selectedProject && selectedProject.images) {
+    const mediaArray = selectedProject.youtubeIds || selectedProject.images;
+    if (selectedProject && mediaArray) {
       setCurrentImageIndex((prev) =>
-        prev === selectedProject.images.length - 1 ? 0 : prev + 1
+        prev === mediaArray.length - 1 ? 0 : prev + 1
       );
     }
   };
 
   const prevImage = (e) => {
     e.stopPropagation();
-    if (selectedProject && selectedProject.images) {
+    const mediaArray = selectedProject.youtubeIds || selectedProject.images;
+    if (selectedProject && mediaArray) {
       setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedProject.images.length - 1 : prev - 1
+        prev === 0 ? mediaArray.length - 1 : prev - 1
       );
     }
   };
@@ -167,10 +169,10 @@ function App() {
               style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-card-bg-${project.id}` }}
             >
               <div className="project-card-image-wrapper">
-                {project.youtubeId ? (
+                {project.youtubeIds || project.youtubeId ? (
                   <iframe 
                     className="project-card-image"
-                    src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
+                    src={`https://www.youtube.com/embed/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -232,7 +234,29 @@ function App() {
             </button>
             
             <div className="modal-media-section">
-              {selectedProject.youtubeId ? (
+              {selectedProject.youtubeIds && selectedProject.youtubeIds.length > 0 ? (
+                <div className="modal-carousel" style={{ viewTransitionName: `project-media-${selectedProject.id}` }}>
+                   <iframe 
+                    className="modal-media"
+                    src={`https://www.youtube.com/embed/${selectedProject.youtubeIds[currentImageIndex]}?autoplay=1`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                  {selectedProject.youtubeIds.length > 1 && (
+                    <>
+                      <button className="modal-nav-btn prev" onClick={prevImage}><ChevronLeft size={24}/></button>
+                      <button className="modal-nav-btn next" onClick={nextImage}><ChevronRight size={24}/></button>
+                      <div className="modal-indicators">
+                        {selectedProject.youtubeIds.map((_, i) => (
+                          <div key={i} className={`indicator-dot ${i === currentImageIndex ? 'active' : ''}`} />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : selectedProject.youtubeId ? (
                 <iframe 
                   className="modal-media"
                   src={`https://www.youtube.com/embed/${selectedProject.youtubeId}?autoplay=1`}

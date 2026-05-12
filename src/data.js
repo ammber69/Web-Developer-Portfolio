@@ -96,17 +96,8 @@ Entregables clave:
 • Flujos de soporte: Reglas de asignación automática, categorías y grupos.
 • Capacitación: Talleres para adopción del sistema como canal oficial de soporte.`,
     image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000',
-    youtubeId: '0zehoKQrgUc',
+    youtubeIds: ['wV8AmYiWMPw', '0zehoKQrgUc'],
     technologies: ['GLPI', 'FusionInventory', 'ITSM', 'SLA', 'Soporte TI'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 7,
-    title: 'Fintech Mobile App',
-    description: 'Aplicación financiera multiplataforma orientada a la generación Z, permitiendo inversiones en micro-acciones y criptomonedas con una interfaz altamente intuitiva.',
-    image: 'https://images.unsplash.com/photo-1616077168079-7e09a6a70bb7?auto=format&fit=crop&q=80&w=1000',
-    technologies: ['React Native', 'GraphQL', 'AWS', 'Node.js'],
     liveUrl: '#',
     githubUrl: '#'
   }
