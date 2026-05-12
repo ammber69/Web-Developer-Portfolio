@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ExternalLink, Github, ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
 
