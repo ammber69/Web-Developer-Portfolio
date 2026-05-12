@@ -1,8 +1,8 @@
 export const projectsData = [
   {
     id: 101,
-    title: 'NissanIQ — Executive Sales Intelligence Platform',
-    description: 'Dashboard ejecutivo de inteligencia comercial desarrollado para Gas Nissan, que centraliza y transforma datos brutos del pipeline digital en visualizaciones estratégicas de alto impacto. Resuelve el problema de dispersión de datos entre agencias, equipos y leads individuales — convirtiendo métricas crudas del sistema Komo en decisiones accionables para directivos en tiempo real.\n\nIncluye análisis de rendimiento vs. benchmark nacional, trazabilidad completa del embudo de conversión, y un asistente IA integrado para exploración asistida de métricas. Diseñado con estética ejecutiva premium (Glassmorphism + sistema de temas dinámico), pensado para tomadores de decisiones, no para analistas.',
+    title: 'NissanIQ Executive Sales Intelligence Platform',
+    description: 'Dashboard ejecutivo de inteligencia comercial desarrollado para Gas Nissan, que centraliza y transforma datos brutos del pipeline digital en visualizaciones estratégicas de alto impacto. Resuelve el problema de dispersión de datos entre agencias, equipos y leads individuales, convirtiendo métricas crudas del sistema Komo en decisiones accionables para directivos en tiempo real.\n\nIncluye análisis de rendimiento vs. benchmark nacional, trazabilidad completa del embudo de conversión, y un asistente IA integrado para exploración asistida de métricas. Diseñado con estética ejecutiva premium (Glassmorphism + sistema de temas dinámico), pensado para tomadores de decisiones, no para analistas.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
     youtubeId: 'vh00t8_6vWA',
     technologies: ['React', 'Vite', 'Framer Motion', 'AI Integration', 'Data Analytics'],
@@ -11,7 +11,7 @@ export const projectsData = [
   },
   {
     id: 102,
-    title: 'Nissan AdControl – Centralized Multi-Agency Advertising Network',
+    title: 'Nissan AdControl Centralized Multi Agency Advertising Network',
     description: 'Solución empresarial robusta diseñada para la gestión centralizada y distribución de contenido publicitario en tiempo real para una red de 6 agencias Nissan. Este sistema permite la sincronización instantánea de campañas en pantallas digitales, eliminando la latencia en cambios de precios o promociones y erradicando errores de implementación manual.\n\nImpacto: Centralización total de activos, reducción drástica de costos operativos y eliminación del 100% de errores de publicación manual entre múltiples sucursales.',
     image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000',
     youtubeId: 'kTS8-nAld1I',
@@ -21,7 +21,7 @@ export const projectsData = [
   },
   {
     id: 103,
-    title: 'CheckCore – Centralización de Checadores Nissan Gasme',
+    title: 'CheckCore Centralización de Checadores Nissan Gasme',
     description: 'Sistema web para la gestión centralizada de todos los checadores biométricos de Nissan Gasme. Incluye interfaz moderna e intuitiva, automatización del cálculo de faltas y retardos, dashboards con datos clave para dirección, y un sistema de monitoreo con auto-reparación remota que detecta y corrige anomalías en los dispositivos sin necesidad de intervención física del equipo de soporte.\n\nImpacto: Ahorro significativo de horas de trabajo manual, reducción de errores y eliminación de tiempos muertos por fallas en equipos remotos.',
     image: '/checkcore_preview.png',
     youtubeId: 'INVFL_my0KA',
@@ -41,24 +41,13 @@ export const projectsData = [
   },
   {
     id: 2,
-    title: 'Plataforma de Donaciones de Sangre – Ángeles Rojos',
+    title: 'Plataforma de Donaciones de Sangre Ángeles Rojos',
     description: "Panel administrativo y gestor de la red social de donaciones sanguíneas 'Ángeles Rojos'. Permite la gestión integral de donantes, solicitudes de sangre, logística y notificaciones en tiempo real, actuando como el núcleo operativo de la plataforma social.",
     images: [
       '/3.png', '/4.png', '/6.png', '/7.png', '/8.png', 
       '/9.png', '/10.png', '/12.png', '/13.png', '/14.png'
     ],
     technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 3,
-    title: 'Gestión de Ventas Minoristas',
-    description: 'Aplicación robusta de gestión de ventas para una franquicia de tiendas. Incluye módulos avanzados de seguridad, control de acceso basado en roles y análisis de ventas.',
-    images: [
-      '/20.png', '/21.png', '/22.png', '/25.png', '/26.png',
-    ],
-    technologies: ['Java', 'Spring Boot', 'MySQL', 'React'],
     liveUrl: '#',
     githubUrl: '#'
   },
