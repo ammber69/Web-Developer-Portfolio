@@ -110,10 +110,10 @@ function App() {
           <div className="hero-text">
             <h1 className="hero-title">
               Hola, soy Antonio. <br/>
-              <span className="text-gradient">Ingeniero de Software.</span>
+              <span className="text-gradient">Ingeniero de Software y Analista de Datos.</span>
             </h1>
             <p className="hero-subtitle">
-              Diseño y construyo soluciones digitales premium. Combinando creatividad, código limpio y experiencias de usuario excepcionales.
+              Diseño y construyo soluciones digitales premium, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
             </p>
             <div className="hero-actions">
               <a href="/MonterrosasSolisJoseAntonioCV.pdf" className="btn-primary" download>

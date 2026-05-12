@@ -1,5 +1,23 @@
 export const projectsData = [
   {
+    id: 101,
+    title: 'Data Lakehouse Nissan',
+    description: 'Desarrollo de Data Lake y estudio de datos para scraping en tiempo real de leads. Inspección de pipeline, análisis de embudos de procesos, detección de tendencias e implementación de planes de mejora y evaluación de vendedores para el área de mercadotecnia.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
+    technologies: ['Python', 'SQL', 'Data Lake', 'Scraping'],
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  {
+    id: 102,
+    title: 'Central de Publicidad Nissan',
+    description: 'Solución web en tiempo real para centralizar el control de anuncios en las pantallas de todas las agencias Nissan. Optimiza tiempos de implementación, reduce costos operativos y minimiza errores para mejorar la evaluación en auditorías corporativas.',
+    image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000',
+    technologies: ['React', 'Node.js', 'WebSockets', 'Dashboard'],
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  {
     id: 1,
     title: 'Modelo Predictivo Dengue',
     description: 'Sistema de predicción para detección temprana de brotes de dengue en México, con análisis de datos epidemiológicos y modelos de Machine Learning.',
@@ -86,4 +104,6 @@ export const skills = [
   { name: 'PostgreSQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', level: 80 },
   { name: 'Docker', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', level: 75 },
   { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', level: 90 },
+  { name: 'Análisis de Datos', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg', level: 85 },
+  { name: 'SQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', level: 85 },
 ];
