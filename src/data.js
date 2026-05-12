@@ -39,13 +39,12 @@ export const projectsData = [
   },
   {
     id: 2,
-    title: 'Plataforma de Donaciones',
-    description: 'Aplicación web administrativa para la gestión de donaciones sanguíneas con APIs REST e integración de servicios externos de notificaciones y logística.',
+    title: 'Plataforma de Donaciones de Sangre – Ángeles Rojos',
+    description: "Panel administrativo y gestor de la red social de donaciones sanguíneas 'Ángeles Rojos'. Permite la gestión integral de donantes, solicitudes de sangre, logística y notificaciones en tiempo real, actuando como el núcleo operativo de la plataforma social.",
     images: [
       '/3.png', '/4.png', '/6.png', '/7.png', '/8.png', 
       '/9.png', '/10.png', '/12.png', '/13.png', '/14.png'
     ],
-    image: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&q=80&w=1000',
     technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
     liveUrl: '#',
     githubUrl: '#'
@@ -57,20 +56,19 @@ export const projectsData = [
     images: [
       '/20.png', '/21.png', '/22.png', '/25.png', '/26.png',
     ],
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1000',
     technologies: ['Java', 'Spring Boot', 'MySQL', 'React'],
     liveUrl: '#',
     githubUrl: '#'
   },
   {
     id: 4,
-    title: 'Punto de Venta NFC',
-    description: 'Sistema integral de punto de venta físico con gestión en tiempo real de almacén. Implementa programas de fidelización de clientes mediante el uso de dispositivos y tarjetas NFC.',
+    title: 'Web Publicitaria El Merengue',
+    description: "Desarrollo de plataforma web para 'El Merengue', empresa líder en repostería y venta de insumos. Incluye catálogo interactivo, gestión de productos y una interfaz visualmente atractiva diseñada para maximizar la conversión y el alcance publicitario de la marca.",
     images: [
       '/1.png', '/2.png',
     ],
-    image: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&q=80&w=1000',
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'NFC'],
+    youtubeId: '-2iTnWxOCl4',
+    technologies: ['React', 'Node.js', 'UI/UX', 'Catalog'],
     liveUrl: '#',
     githubUrl: '#'
   },
