@@ -22,7 +22,7 @@ export const projectsData = [
     title: 'Modelo Predictivo Dengue',
     description: 'Sistema de predicción para detección temprana de brotes de dengue en México, con análisis de datos epidemiológicos y modelos de Machine Learning.',
     image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000',
-    video: '/videoDengueScan.mp4',
+    video: 'https://drive.google.com/uc?export=download&id=1RAM4GJhfkTLipBFgPi1urneWwal5JZys',
     technologies: ['Python', 'Pandas', 'Scikit-learn', 'React'],
     liveUrl: '#',
     githubUrl: '#'
