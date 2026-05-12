@@ -73,15 +73,6 @@ export const projectsData = [
     githubUrl: '#'
   },
   {
-    id: 5,
-    title: 'E-commerce Premium UI',
-    description: 'Plataforma de comercio electrónico de alto rendimiento con animaciones fluidas, pasarela de pago segura con Stripe y panel de administración en tiempo real.',
-    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=1000',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind', 'Stripe'],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
     id: 6,
     title: 'Gestión de Servicios TI (GLPI)',
     description: `Diseño, configuración e implementación desde cero de una plataforma ITSM basada en GLPI para una organización de más de 100 usuarios. El proyecto incluyó catálogo de servicios, gestión de activos, SLAs, flujos de atención y un programa de adopción cultural del sistema.
