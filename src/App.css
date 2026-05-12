@@ -710,6 +710,24 @@ iframe.modal-media {
   font-size: 1.1rem;
 }
 
+.private-project-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 12px 20px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+.private-project-badge span {
+  letter-spacing: 0.02em;
+}
+
 .footer {
   text-align: center;
   padding: 40px;

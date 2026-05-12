@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ExternalLink, Github, ChevronLeft, ChevronRight, X, Code, Menu } from 'lucide-react';
+import { ExternalLink, Github, ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
 
@@ -324,11 +324,12 @@ function App() {
               <p className="modal-description">{selectedProject.description}</p>
 
               <div className="modal-actions-row">
-                <a href={selectedProject.liveUrl} className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
-                  <ExternalLink size={18} /> Visitar Sitio
-                </a>
-                <a href={selectedProject.githubUrl} className="btn-secondary modal-btn" target="_blank" rel="noopener noreferrer">
-                  <Github size={18} /> Ver Código
+                <div className="private-project-badge">
+                  <Lock size={16} />
+                  <span>Proyecto Privado / Confidencial</span>
+                </div>
+                <a href="https://wa.me/521234567890" className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
+                  <MessageSquare size={18} /> Solicitar Demo
                 </a>
               </div>
             </div>
