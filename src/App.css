@@ -39,11 +39,10 @@ body {
   margin: 0 auto;
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  position: relative;
+  display: flow-root;
 }
 
 .section-header {
@@ -217,7 +216,7 @@ body {
 /* Hero Section */
 .hero-section {
   padding-top: 160px;
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
