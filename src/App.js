@@ -167,7 +167,16 @@ function App() {
               style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-card-bg-${project.id}` }}
             >
               <div className="project-card-image-wrapper">
-                {project.video ? (
+                {project.youtubeId ? (
+                  <iframe 
+                    className="project-card-image"
+                    src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    style={{ viewTransitionName: `project-media-${project.id}`, pointerEvents: 'none' }}
+                  />
+                ) : project.video ? (
                   <video 
                     src={project.video} 
                     className="project-card-image"
@@ -223,7 +232,17 @@ function App() {
             </button>
             
             <div className="modal-media-section">
-              {selectedProject.video ? (
+              {selectedProject.youtubeId ? (
+                <iframe 
+                  className="modal-media"
+                  src={`https://www.youtube.com/embed/${selectedProject.youtubeId}?autoplay=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
+                />
+              ) : selectedProject.video ? (
                 <video 
                   src={selectedProject.video} 
                   className="modal-media"
