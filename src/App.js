@@ -75,7 +75,7 @@ function App() {
   return (
     <div className="app-container">
       {/* Navigation */}
-      <nav className="nav-bar (glass)">
+      <nav className="nav-bar">
         <div className="nav-content">
           <div className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-color)' }}>
             <Code size={28} strokeWidth={2.5} />
@@ -135,7 +135,7 @@ function App() {
       {/* Skills Section */}
       <section id="skills" className="skills-section section-padding">
         <div className="section-header">
-          <h2>Habilidades Técnicas</h2>
+          <h2 style={{ viewTransitionName: 'skills-title' }}>Habilidades Técnicas</h2>
           <p>Herramientas y tecnologías que utilizo para dar vida a las ideas.</p>
         </div>
         
@@ -173,14 +173,14 @@ function App() {
                     className="project-card-image"
                     autoPlay muted loop playsInline
                     poster={project.image || (project.images && project.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800'}
-                    style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-media-${project.id}` }}
+                    style={{ viewTransitionName: `project-media-${project.id}` }}
                   />
                 ) : (
                   <img 
                     src={project.image || (project.images && project.images[0])} 
                     alt={project.title} 
                     className="project-card-image"
-                    style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-media-${project.id}` }}
+                    style={{ viewTransitionName: `project-media-${project.id}` }}
                     onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
                   />
                 )}
@@ -189,7 +189,7 @@ function App() {
                 </div>
               </div>
               <div className="project-card-content">
-                <h3 className="project-card-title" style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-title-${project.id}` }}>
+                <h3 className="project-card-title" style={{ viewTransitionName: selectedProject?.id === project.id ? `project-title-${project.id}` : `project-title-${project.id}` }}>
                   {project.title}
                 </h3>
                 <div className="project-card-tech">
@@ -197,7 +197,7 @@ function App() {
                     <span 
                       key={i} 
                       className="tech-pill"
-                      style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `tech-pill-${project.id}-${i}` }}
+                      style={{ viewTransitionName: selectedProject?.id === project.id ? `tech-pill-${project.id}-${i}` : `tech-pill-${project.id}-${i}` }}
                     >
                       {tech}
                     </span>
