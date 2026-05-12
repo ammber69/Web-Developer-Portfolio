@@ -272,6 +272,7 @@ body {
 .text-gradient {
   background: linear-gradient(135deg, #0071e3 0%, #42a5f5 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -374,7 +375,7 @@ body {
 @media (min-width: 768px) {
   .projects-bento-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    auto-rows: minmax(350px, auto);
+    grid-auto-rows: minmax(350px, auto);
   }
 }
 
