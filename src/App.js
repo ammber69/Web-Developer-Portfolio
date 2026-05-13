@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
@@ -74,6 +74,9 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+  const navLinksRef = useRef(null);
+  const glassIndicatorRef = useRef(null);
 
   // Manejar View Transitions al abrir un proyecto
   const handleProjectClick = useCallback((project) => {
@@ -141,6 +144,41 @@ function App() {
     };
   }, [selectedProject]);
 
+  // IntersectionObserver para detectar sección activa
+  useEffect(() => {
+    const sections = document.querySelectorAll('#hero, #skills, #projects');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.35, rootMargin: '-80px 0px -20% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => sections.forEach((section) => observer.unobserve(section));
+  }, []);
+
+  // Mover el indicador Liquid Glass al link activo
+  useEffect(() => {
+    const navContainer = navLinksRef.current;
+    const indicator = glassIndicatorRef.current;
+    if (!navContainer || !indicator) return;
+
+    const activeLink = navContainer.querySelector(`[data-section="${activeSection}"]`);
+    if (!activeLink) return;
+
+    const containerRect = navContainer.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+
+    indicator.style.width = `${linkRect.width + 20}px`;
+    indicator.style.left = `${linkRect.left - containerRect.left - 10}px`;
+    indicator.style.opacity = '1';
+  }, [activeSection]);
+
   return (
     <div className="app-container">
       {/* Navigation */}
@@ -152,10 +190,11 @@ function App() {
               Antonio <span className="logo-lastname">Monterrosas</span>
             </span>
           </div>
-          <div className="nav-links desktop-only">
-            <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
-            <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
-            <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+          <div className="nav-links desktop-only" ref={navLinksRef}>
+            <div className="liquid-glass-indicator" ref={glassIndicatorRef} />
+            <a href="#hero" data-section="hero" className={activeSection === 'hero' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
+            <a href="#skills" data-section="skills" className={activeSection === 'skills' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
+            <a href="#projects" data-section="projects" className={activeSection === 'projects' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
           </div>
           
           <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
