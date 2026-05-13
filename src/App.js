@@ -1,7 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
+
+const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
+  return (
+    <div 
+      className={`project-card bento-item-${index % 4}`}
+      onClick={() => onClick(project)}
+      style={{ viewTransitionName: isSelected ? 'none' : `project-card-bg-${project.id}` }}
+    >
+      <div className="project-card-image-wrapper">
+        {project.youtubeIds || project.youtubeId ? (
+          <iframe 
+            className="project-card-image"
+            src={`https://www.youtube.com/embed/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style={{ viewTransitionName: `project-media-${project.id}`, pointerEvents: 'none' }}
+            loading="lazy"
+          />
+        ) : project.video ? (
+          <video 
+            src={project.video} 
+            className="project-card-image"
+            autoPlay muted loop playsInline
+            poster={project.image || (project.images && project.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800'}
+            style={{ viewTransitionName: `project-media-${project.id}` }}
+          />
+        ) : (
+          <img 
+            src={project.image || (project.images && project.images[0])} 
+            alt={project.title} 
+            className="project-card-image"
+            style={{ viewTransitionName: `project-media-${project.id}` }}
+            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
+            loading="lazy"
+          />
+        )}
+        <div className="project-card-overlay">
+          <span className="view-project-label">Ver Detalles</span>
+        </div>
+      </div>
+      <div className="project-card-content">
+        <h3 className="project-card-title" style={{ viewTransitionName: isSelected ? `project-title-${project.id}` : `project-title-${project.id}` }}>
+          {project.title}
+        </h3>
+        <div className="project-card-tech">
+          {project.technologies.slice(0, 3).map((tech, i) => (
+            <span 
+              key={i} 
+              className="tech-pill"
+              style={{ viewTransitionName: isSelected ? `tech-pill-${project.id}-${i}` : `tech-pill-${project.id}-${i}` }}
+            >
+              {tech}
+            </span>
+          ))}
+          {project.technologies.length > 3 && <span className="tech-pill">+{project.technologies.length - 3}</span>}
+        </div>
+      </div>
+    </div>
+  );
+});
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -9,7 +70,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Manejar View Transitions al abrir un proyecto
-  const handleProjectClick = (project) => {
+  const handleProjectClick = useCallback((project) => {
     if (!document.startViewTransition) {
       setSelectedProject(project);
       setCurrentImageIndex(0);
@@ -20,7 +81,7 @@ function App() {
       setSelectedProject(project);
       setCurrentImageIndex(0);
     });
-  };
+  }, []);
 
   // Manejar View Transitions al cerrar un proyecto
   const closeModal = () => {
@@ -162,61 +223,13 @@ function App() {
 
         <div className="projects-bento-grid">
           {projectsData.map((project, index) => (
-            <div 
-              key={project.id} 
-              className={`project-card bento-item-${index % 4}`}
-              onClick={() => handleProjectClick(project)}
-              style={{ viewTransitionName: selectedProject?.id === project.id ? 'none' : `project-card-bg-${project.id}` }}
-            >
-              <div className="project-card-image-wrapper">
-                {project.youtubeIds || project.youtubeId ? (
-                  <iframe 
-                    className="project-card-image"
-                    src={`https://www.youtube.com/embed/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    style={{ viewTransitionName: `project-media-${project.id}`, pointerEvents: 'none' }}
-                  />
-                ) : project.video ? (
-                  <video 
-                    src={project.video} 
-                    className="project-card-image"
-                    autoPlay muted loop playsInline
-                    poster={project.image || (project.images && project.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800'}
-                    style={{ viewTransitionName: `project-media-${project.id}` }}
-                  />
-                ) : (
-                  <img 
-                    src={project.image || (project.images && project.images[0])} 
-                    alt={project.title} 
-                    className="project-card-image"
-                    style={{ viewTransitionName: `project-media-${project.id}` }}
-                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
-                  />
-                )}
-                <div className="project-card-overlay">
-                  <span className="view-project-label">Ver Detalles</span>
-                </div>
-              </div>
-              <div className="project-card-content">
-                <h3 className="project-card-title" style={{ viewTransitionName: selectedProject?.id === project.id ? `project-title-${project.id}` : `project-title-${project.id}` }}>
-                  {project.title}
-                </h3>
-                <div className="project-card-tech">
-                  {project.technologies.slice(0, 3).map((tech, i) => (
-                    <span 
-                      key={i} 
-                      className="tech-pill"
-                      style={{ viewTransitionName: selectedProject?.id === project.id ? `tech-pill-${project.id}-${i}` : `tech-pill-${project.id}-${i}` }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 3 && <span className="tech-pill">+{project.technologies.length - 3}</span>}
-                </div>
-              </div>
-            </div>
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              isSelected={selectedProject?.id === project.id}
+              onClick={handleProjectClick}
+            />
           ))}
         </div>
       </section>
