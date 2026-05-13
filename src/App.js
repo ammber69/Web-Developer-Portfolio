@@ -12,15 +12,21 @@ const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
     >
       <div className="project-card-image-wrapper">
         {project.youtubeIds || project.youtubeId ? (
-          <iframe 
-            className="project-card-image"
-            src={`https://www.youtube.com/embed/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}&controls=0&modestbranding=1&showinfo=0`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            style={{ viewTransitionName: `project-media-${project.id}`, pointerEvents: 'none' }}
-            loading="lazy"
-          />
+          <div className="youtube-thumbnail-wrapper" style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <img 
+              src={`https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/maxresdefault.jpg`}
+              alt={project.title}
+              className="project-card-image"
+              style={{ viewTransitionName: `project-media-${project.id}` }}
+              loading="lazy"
+              onError={(e) => { e.target.src = `https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/hqdefault.jpg` }}
+            />
+            <div className="youtube-play-icon">
+              <svg viewBox="0 0 24 24" fill="white" width="48" height="48">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
         ) : project.video ? (
           <video 
             src={project.video} 
