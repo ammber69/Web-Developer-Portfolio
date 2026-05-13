@@ -34,7 +34,7 @@ Entregables clave:
   {
     id: 101,
     title: 'Data Lake & NissanIQ Executive Sales Intelligence Platform',
-    description: 'Dashboard ejecutivo de inteligencia comercial desarrollado para Gas Nissan, que centraliza y transforma datos brutos del pipeline digital en visualizaciones estratégicas de alto impacto. Resuelve el problema de dispersión de datos entre agencias, equipos y leads individuales, convirtiendo métricas crudas del sistema Komo en decisiones accionables para directivos en tiempo real.\n\nIncluye análisis de rendimiento vs. benchmark nacional, trazabilidad completa del embudo de conversión, y un asistente IA integrado para exploración asistida de métricas. Diseñado con estética ejecutiva premium (Glassmorphism + sistema de temas dinámico), pensado para tomadores de decisiones, no para analistas.',
+    description: 'Dashboard ejecutivo de inteligencia comercial desarrollado para Nissan Gasme, que centraliza y transforma datos brutos del pipeline digital en visualizaciones estratégicas de alto impacto. Resuelve el problema de dispersión de datos entre agencias, equipos y leads individuales, convirtiendo métricas crudas del sistema Komo en decisiones accionables para directivos en tiempo real.\n\nIncluye análisis de rendimiento vs. benchmark nacional, trazabilidad completa del embudo de conversión, y un asistente IA integrado para exploración asistida de métricas. Diseñado con estética ejecutiva premium (Glassmorphism + sistema de temas dinámico), pensado para tomadores de decisiones, no para analistas.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
     youtubeId: 'vh00t8_6vWA',
     technologies: ['React', 'Vite', 'Framer Motion', 'AI Integration', 'Data Analytics'],
