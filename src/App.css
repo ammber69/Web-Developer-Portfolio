@@ -553,11 +553,17 @@ body {
   height: 95vh;
   border-radius: 32px 32px 0 0;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
   position: relative;
   display: flex;
   flex-direction: column;
   box-shadow: 0 -20px 60px rgba(0,0,0,0.3);
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 @media (min-width: 768px) {
