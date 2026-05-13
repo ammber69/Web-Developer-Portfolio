@@ -179,7 +179,7 @@ function App() {
               Diseño y construyo soluciones digitales premium, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
             </p>
             <div className="hero-actions">
-              <a href="/MonterrosasSolisJoseAntonioCV.pdf" className="btn-primary" download>
+              <a href="/Curriculum Vitae MONTERROSAS SOLIS JOSE ANTONIO .pdf" className="btn-primary" download>
                 Descargar CV
               </a>
               <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-secondary">
@@ -341,7 +341,7 @@ function App() {
                   <Lock size={16} />
                   <span>Proyecto Privado / Confidencial</span>
                 </div>
-                <a href="https://wa.me/521234567890" className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/522712831339" className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
                   <MessageSquare size={18} /> Solicitar Demo
                 </a>
               </div>
