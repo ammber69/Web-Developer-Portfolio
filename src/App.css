@@ -601,6 +601,7 @@ body {
   align-items: flex-end; /* Sheet from bottom */
   justify-content: center;
   padding-top: 40px; /* Space from top */
+  animation: overlay-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (min-width: 768px) {
@@ -626,10 +627,36 @@ body {
   flex-direction: column;
   box-shadow: 0 -20px 60px rgba(0,0,0,0.3);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: modal-scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .modal-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+/* Apple-style Modal Animations */
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+}
+
+@keyframes modal-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 @media (min-width: 768px) {
@@ -827,15 +854,6 @@ iframe.modal-media {
   font-size: 0.9rem;
 }
 
-/* View Transitions API Animations */
-@view-transition {
-  navigation: auto;
-}
-
-::view-transition-group(*) {
-  animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {

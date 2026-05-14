@@ -3,12 +3,11 @@ import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'l
 import { projectsData, skills } from './data';
 import "./App.css";
 
-const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
+const ProjectCard = React.memo(({ project, index, onClick }) => {
   return (
     <div 
       className={`project-card bento-item-${index % 4}`}
       onClick={() => onClick(project)}
-      style={{ viewTransitionName: isSelected ? 'none' : `project-card-bg-${project.id}` }}
     >
       <div className="project-card-image-wrapper">
         {project.youtubeIds || project.youtubeId ? (
@@ -17,7 +16,6 @@ const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
               src={`https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/maxresdefault.jpg`}
               alt={project.title}
               className="project-card-image"
-              style={{ viewTransitionName: `project-media-${project.id}` }}
               loading="lazy"
               onError={(e) => { e.target.src = `https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/hqdefault.jpg` }}
             />
@@ -33,14 +31,12 @@ const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
             className="project-card-image"
             autoPlay muted loop playsInline
             poster={project.image || (project.images && project.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800'}
-            style={{ viewTransitionName: `project-media-${project.id}` }}
           />
         ) : (
           <img 
             src={project.image || (project.images && project.images[0])} 
             alt={project.title} 
             className="project-card-image"
-            style={{ viewTransitionName: `project-media-${project.id}` }}
             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
             loading="lazy"
           />
@@ -50,16 +46,12 @@ const ProjectCard = React.memo(({ project, index, isSelected, onClick }) => {
         </div>
       </div>
       <div className="project-card-content">
-        <h3 className="project-card-title" style={{ viewTransitionName: isSelected ? `project-title-${project.id}` : `project-title-${project.id}` }}>
+        <h3 className="project-card-title">
           {project.title}
         </h3>
         <div className="project-card-tech">
           {project.technologies.slice(0, 3).map((tech, i) => (
-            <span 
-              key={i} 
-              className="tech-pill"
-              style={{ viewTransitionName: isSelected ? `tech-pill-${project.id}-${i}` : `tech-pill-${project.id}-${i}` }}
-            >
+            <span key={i} className="tech-pill">
               {tech}
             </span>
           ))}
@@ -78,30 +70,15 @@ function App() {
   const navLinksRef = useRef(null);
   const glassIndicatorRef = useRef(null);
 
-  // Manejar View Transitions al abrir un proyecto
+  // Abrir proyecto con animación Apple-style
   const handleProjectClick = useCallback((project) => {
-    if (!document.startViewTransition) {
-      setSelectedProject(project);
-      setCurrentImageIndex(0);
-      return;
-    }
-
-    document.startViewTransition(() => {
-      setSelectedProject(project);
-      setCurrentImageIndex(0);
-    });
+    setSelectedProject(project);
+    setCurrentImageIndex(0);
   }, []);
 
-  // Manejar View Transitions al cerrar un proyecto
+  // Cerrar modal
   const closeModal = () => {
-    if (!document.startViewTransition) {
-      setSelectedProject(null);
-      return;
-    }
-
-    document.startViewTransition(() => {
-      setSelectedProject(null);
-    });
+    setSelectedProject(null);
   };
 
   const nextImage = (e) => {
@@ -260,7 +237,7 @@ function App() {
       {/* Skills Section */}
       <section id="skills" className="skills-section section-padding">
         <div className="section-header">
-          <h2 style={{ viewTransitionName: 'skills-title' }}>Habilidades Técnicas</h2>
+          <h2>Habilidades Técnicas</h2>
           <p>Herramientas y tecnologías que utilizo para dar vida a las ideas.</p>
         </div>
         
@@ -289,20 +266,18 @@ function App() {
               key={project.id}
               project={project}
               index={index}
-              isSelected={selectedProject?.id === project.id}
               onClick={handleProjectClick}
             />
           ))}
         </div>
       </section>
 
-      {/* Detail Modal with View Transitions */}
+      {/* Detail Modal - Apple Style */}
       {selectedProject && (
         <div className="modal-overlay" onClick={closeModal}>
           <div 
             className="modal-container" 
             onClick={(e) => e.stopPropagation()}
-            style={{ viewTransitionName: `project-card-bg-${selectedProject.id}` }}
           >
             <button className="modal-close-btn" onClick={closeModal}>
               <X size={24} />
@@ -310,10 +285,10 @@ function App() {
             
             <div className="modal-media-section">
               {selectedProject.youtubeIds && selectedProject.youtubeIds.length > 0 ? (
-                <div className="modal-carousel" style={{ viewTransitionName: `project-media-${selectedProject.id}` }}>
+                <div className="modal-carousel">
                    <iframe 
                     className="modal-media"
-                    src={`https://www.youtube.com/embed/${selectedProject.youtubeIds[currentImageIndex]}?autoplay=1`}
+                    src={`https://www.youtube.com/embed/${selectedProject.youtubeIds[currentImageIndex]}?autoplay=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=white&playsinline=1`}
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -334,12 +309,11 @@ function App() {
               ) : selectedProject.youtubeId ? (
                 <iframe 
                   className="modal-media"
-                  src={`https://www.youtube.com/embed/${selectedProject.youtubeId}?autoplay=1`}
+                  src={`https://www.youtube.com/embed/${selectedProject.youtubeId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=white&playsinline=1`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
-                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
                 />
               ) : selectedProject.video ? (
                 <video 
@@ -347,10 +321,9 @@ function App() {
                   className="modal-media"
                   controls autoPlay loop muted playsInline
                   poster={selectedProject.image || (selectedProject.images && selectedProject.images[0]) || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200'}
-                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
                 />
               ) : selectedProject.images && selectedProject.images.length > 0 ? (
-                <div className="modal-carousel" style={{ viewTransitionName: `project-media-${selectedProject.id}` }}>
+                <div className="modal-carousel">
                   <img 
                     src={selectedProject.images[currentImageIndex]} 
                     alt={selectedProject.title} 
@@ -374,23 +347,18 @@ function App() {
                   src={selectedProject.image} 
                   alt={selectedProject.title} 
                   className="modal-media"
-                  style={{ viewTransitionName: `project-media-${selectedProject.id}` }}
                 />
               )}
             </div>
 
             <div className="modal-info-section">
-              <h2 className="modal-title" style={{ viewTransitionName: `project-title-${selectedProject.id}` }}>
+              <h2 className="modal-title">
                 {selectedProject.title}
               </h2>
               
               <div className="modal-tech-list">
                 {selectedProject.technologies.map((tech, i) => (
-                  <span 
-                    key={i} 
-                    className="tech-pill"
-                    style={{ viewTransitionName: `tech-pill-${selectedProject.id}-${i}` }}
-                  >
+                  <span key={i} className="tech-pill">
                     {tech}
                   </span>
                 ))}
