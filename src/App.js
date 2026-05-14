@@ -144,22 +144,39 @@ function App() {
     };
   }, [selectedProject]);
 
-  // IntersectionObserver para detectar sección activa
+  // Detectar sección activa basado en posición de scroll
   useEffect(() => {
-    const sections = document.querySelectorAll('#hero, #skills, #projects');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.35, rootMargin: '-80px 0px -20% 0px' }
-    );
+    const sectionIds = ['hero', 'skills', 'projects'];
 
-    sections.forEach((section) => observer.observe(section));
-    return () => sections.forEach((section) => observer.unobserve(section));
+    const handleScroll = () => {
+      const scrollContainer = document.querySelector('.app-container');
+      const scrollTop = scrollContainer.scrollTop;
+      const viewportHeight = scrollContainer.clientHeight;
+
+      // Si estamos cerca del fondo, activar la última sección
+      if (scrollTop + viewportHeight >= scrollContainer.scrollHeight - 100) {
+        setActiveSection('projects');
+        return;
+      }
+
+      let current = 'hero';
+      for (const id of sectionIds) {
+        const section = document.getElementById(id);
+        if (section) {
+          const sectionTop = section.offsetTop - 120; // offset por el navbar fijo
+          if (scrollTop >= sectionTop) {
+            current = id;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
+    const scrollContainer = document.querySelector('.app-container');
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // ejecutar al montar
+
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Mover el indicador Liquid Glass al link activo
