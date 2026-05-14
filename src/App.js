@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare, Phone, Mail, Github, Linkedin } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
 
@@ -380,9 +380,31 @@ function App() {
         </div>
       )}
       
-      {/* Footer */}
+      {/* Footer / Contacto */}
       <footer className="footer">
-        <p>© {new Date().getFullYear()} Antonio. Construido con React.</p>
+        <div className="footer-content">
+          <div className="footer-heading">
+            <h3>¿Tienes un proyecto en mente?</h3>
+            <p>Hablemos y hagamos algo increíble juntos.</p>
+          </div>
+          <div className="footer-contact">
+            <a href="tel:+522712831339" className="footer-contact-item">
+              <Phone size={18} />
+              <span>+52 271 283 1339</span>
+            </a>
+            <a href="mailto:joseantonio042002@gmail.com" className="footer-contact-item">
+              <Mail size={18} />
+              <span>joseantonio042002@gmail.com</span>
+            </a>
+            <a href="https://wa.me/522712831339" className="footer-contact-item footer-cta" target="_blank" rel="noopener noreferrer">
+              <MessageSquare size={18} />
+              <span>Escríbeme por WhatsApp</span>
+            </a>
+          </div>
+          <div className="footer-bottom">
+            <p>© {new Date().getFullYear()} Antonio Monterrosas. Todos los derechos reservados.</p>
+          </div>
+        </div>
       </footer>
     </div>
   );
