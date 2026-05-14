@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare, Phone, Mail, Github, Linkedin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare, Phone, Mail } from 'lucide-react';
 import { projectsData, skills } from './data';
 import "./App.css";
 
