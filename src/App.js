@@ -228,7 +228,7 @@ function App() {
           </div>
           <div className="hero-visual">
             <div className="hero-avatar-container">
-              <img src="/perfil.png" alt="Antonio" className="hero-avatar" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
+              <img src="/PerfilIMG.png" alt="Antonio" className="hero-avatar" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
             </div>
           </div>
         </div>
