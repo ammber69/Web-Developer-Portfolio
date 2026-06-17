@@ -218,7 +218,7 @@ function App() {
               Diseño y construyo soluciones digitales premium, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
             </p>
             <div className="hero-actions">
-              <a href="/Curriculum Vitae MONTERROSAS SOLIS JOSE ANTONIO .pdf" className="btn-primary" download="CV_Monterrosas_Solis_Jose_Antonio.pdf">
+              <a href="/CV Monterrosas Solis Jose Antonio.pdf" className="btn-primary" download="CV Monterrosas Solis Jose Antonio.pdf">
                 Descargar CV
               </a>
               <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-secondary">
