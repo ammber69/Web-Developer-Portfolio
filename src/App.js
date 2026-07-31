@@ -352,19 +352,73 @@ function App() {
             </div>
 
             <div className="modal-info-section">
-              <h2 className="modal-title">
-                {selectedProject.title}
-              </h2>
-              
-              <div className="modal-tech-list">
-                {selectedProject.technologies.map((tech, i) => (
-                  <span key={i} className="tech-pill">
-                    {tech}
-                  </span>
-                ))}
+              <div className="modal-info-header">
+                <h2 className="modal-title">
+                  {selectedProject.title}
+                </h2>
+                
+                <div className="modal-tech-list">
+                  {selectedProject.technologies.map((tech, i) => (
+                    <span key={i} className="modal-tech-pill">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <p className="modal-description">{selectedProject.description}</p>
+              <div className="modal-description-content">
+                {selectedProject.description.split('\n\n').map((block, blockIdx) => {
+                  const lines = block.split('\n');
+                  const hasBullets = lines.some(l => l.trim().startsWith('•'));
+                  
+                  if (hasBullets) {
+                    const headerLine = lines.find(l => !l.trim().startsWith('•') && l.trim().length > 0);
+                    const bullets = lines.filter(l => l.trim().startsWith('•'));
+                    return (
+                      <div key={blockIdx} className="modal-desc-card">
+                        {headerLine && <h4 className="modal-desc-card-title">{headerLine.replace(':', '').trim()}</h4>}
+                        <ul className="modal-desc-list">
+                          {bullets.map((bullet, bIdx) => {
+                            const text = bullet.replace('•', '').trim();
+                            const colonIdx = text.indexOf(':');
+                            if (colonIdx > -1 && colonIdx < 40) {
+                              return (
+                                <li key={bIdx}>
+                                  <strong>{text.substring(0, colonIdx)}</strong>
+                                  <span>{text.substring(colonIdx)}</span>
+                                </li>
+                              );
+                            }
+                            return <li key={bIdx}>{text}</li>;
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  }
+                  
+                  // Check if it's a short header-like block (e.g., "Logro principal:")
+                  const isHeader = block.trim().endsWith(':') && block.trim().length < 60;
+                  if (isHeader) return null; // Will be consumed by the next block
+                  
+                  // Check if previous block was a header
+                  const allBlocks = selectedProject.description.split('\n\n');
+                  const prevBlock = blockIdx > 0 ? allBlocks[blockIdx - 1] : null;
+                  const prevIsHeader = prevBlock && prevBlock.trim().endsWith(':') && prevBlock.trim().length < 60;
+                  
+                  if (prevIsHeader) {
+                    return (
+                      <div key={blockIdx} className="modal-desc-card">
+                        <h4 className="modal-desc-card-title">{prevBlock.replace(':', '').trim()}</h4>
+                        <p className="modal-desc-text">{block}</p>
+                      </div>
+                    );
+                  }
+                  
+                  return (
+                    <p key={blockIdx} className="modal-desc-intro">{block}</p>
+                  );
+                })}
+              </div>
 
               <div className="modal-actions-row">
                 <div className="private-project-badge">

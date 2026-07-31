@@ -20,6 +20,26 @@ Entregables clave:
     githubUrl: '#'
   },
   {
+    id: 7,
+    title: 'Plataforma Web Transportes Alegra',
+    description: `Diseño y desarrollo de sitio web corporativo para Transportes Alegra, empresa especializada en servicios de transporte y logística. La plataforma presenta de manera clara y profesional el catálogo completo de servicios, fortaleciendo la presencia digital de la marca y facilitando el contacto directo con clientes potenciales.
+
+Objetivo principal:
+Crear un canal digital efectivo que impulse la captación de nuevos clientes, transmita confianza y profesionalismo, y simplifique el proceso de cotización y contratación de servicios de transporte.
+
+Características clave:
+• Presentación de servicios: Secciones detalladas con la oferta completa de soluciones de transporte y logística.
+• Formulario de contacto: Canal directo para solicitudes de cotización, consultas y contratación de servicios.
+• Diseño responsive: Experiencia optimizada para cualquier dispositivo, desde escritorio hasta móvil.
+• Identidad de marca: Estética alineada con la imagen corporativa de Transportes Alegra, generando confianza y credibilidad.
+• SEO optimizado: Estructura pensada para mejorar el posicionamiento en buscadores y la visibilidad online.`,
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000',
+    youtubeId: 'PMpbZ9fQx1I',
+    technologies: ['Desarrollo Web', 'UI/UX', 'SEO', 'Responsive Design', 'Branding'],
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  {
     id: 4,
     title: 'Web Publicitaria El Merengue',
     description: "Desarrollo de plataforma web para 'El Merengue', empresa líder en repostería y venta de insumos. Incluye catálogo interactivo, gestión de productos y una interfaz visualmente atractiva diseñada para maximizar la conversión y el alcance publicitario de la marca.",
