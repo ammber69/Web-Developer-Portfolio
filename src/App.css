@@ -15,6 +15,8 @@
   --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: 1px solid rgba(255, 255, 255, 0.4);
   --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --section-transition-duration: 1s;
 }
 
 body {
@@ -23,12 +25,14 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
-  overflow-x: hidden;
+  overflow: hidden;
   /* Anti-copy protection */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  height: 100vh;
+  margin: 0;
 }
 
 /* Prevent image dragging and saving */
@@ -44,20 +48,55 @@ img {
   pointer-events: auto;
 }
 
+/* ============================================
+   FULLSCREEN SCROLL CONTAINER
+   ============================================ */
 .app-container {
   height: 100vh;
-  overflow-y: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The scroll wrapper that gets programmatically scrolled */
+.scroll-wrapper {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
   scroll-behavior: smooth;
 }
 
-.section-padding {
+/* When projects section is active and allows internal scroll */
+.scroll-wrapper.projects-scrollable {
+  overflow-y: auto;
+  scroll-snap-type: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-wrapper.projects-scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   FULLSCREEN SECTIONS
+   ============================================ */
+.fullscreen-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-inner {
   padding: 100px 5%;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-  min-height: 100vh;
   position: relative;
-  display: flow-root;
 }
 
 .section-header {
@@ -79,7 +118,207 @@ img {
   margin: 0 auto;
 }
 
-/* Navbar */
+/* Projects section needs to be taller to fit all content */
+.projects-section.fullscreen-section {
+  min-height: auto;
+  height: auto;
+  justify-content: flex-start;
+  padding-top: 0;
+}
+
+/* ============================================
+   STAGGERED REVEAL ANIMATIONS
+   ============================================ */
+
+/* All revealable elements start hidden */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: 
+    opacity 0.9s var(--apple-ease),
+    transform 0.9s var(--apple-ease);
+  will-change: opacity, transform;
+}
+
+/* When section becomes visible, reveal elements with stagger */
+.section-visible .reveal-element {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.reveal-delay-0 { transition-delay: 0ms; }
+.reveal-delay-1 { transition-delay: 150ms; }
+.reveal-delay-2 { transition-delay: 300ms; }
+.reveal-delay-3 { transition-delay: 450ms; }
+.reveal-delay-4 { transition-delay: 600ms; }
+
+/* Scale reveal variant for the avatar */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: 
+    opacity 1s var(--apple-ease),
+    transform 1s var(--apple-ease);
+  will-change: opacity, transform;
+}
+
+.section-visible .reveal-scale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Skill cards individual stagger */
+.skill-card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: 
+    opacity 0.6s var(--apple-ease),
+    transform 0.6s var(--apple-ease),
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    border 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.section-visible .skill-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Generate stagger delays for up to 15 skill cards */
+.section-visible .skill-card:nth-child(1)  { transition-delay: 200ms; }
+.section-visible .skill-card:nth-child(2)  { transition-delay: 250ms; }
+.section-visible .skill-card:nth-child(3)  { transition-delay: 300ms; }
+.section-visible .skill-card:nth-child(4)  { transition-delay: 350ms; }
+.section-visible .skill-card:nth-child(5)  { transition-delay: 400ms; }
+.section-visible .skill-card:nth-child(6)  { transition-delay: 450ms; }
+.section-visible .skill-card:nth-child(7)  { transition-delay: 500ms; }
+.section-visible .skill-card:nth-child(8)  { transition-delay: 550ms; }
+.section-visible .skill-card:nth-child(9)  { transition-delay: 600ms; }
+.section-visible .skill-card:nth-child(10) { transition-delay: 650ms; }
+.section-visible .skill-card:nth-child(11) { transition-delay: 700ms; }
+.section-visible .skill-card:nth-child(12) { transition-delay: 750ms; }
+.section-visible .skill-card:nth-child(13) { transition-delay: 800ms; }
+
+/* Project cards stagger */
+.project-card {
+  opacity: 0;
+  transform: translateY(50px) scale(0.97);
+  transition: 
+    opacity 0.7s var(--apple-ease),
+    transform 0.7s var(--apple-ease),
+    box-shadow 0.5s var(--apple-ease),
+    border 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.section-visible .project-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.section-visible .project-card:nth-child(1) { transition-delay: 200ms; }
+.section-visible .project-card:nth-child(2) { transition-delay: 300ms; }
+.section-visible .project-card:nth-child(3) { transition-delay: 400ms; }
+.section-visible .project-card:nth-child(4) { transition-delay: 500ms; }
+.section-visible .project-card:nth-child(5) { transition-delay: 600ms; }
+.section-visible .project-card:nth-child(6) { transition-delay: 700ms; }
+.section-visible .project-card:nth-child(7) { transition-delay: 800ms; }
+.section-visible .project-card:nth-child(8) { transition-delay: 900ms; }
+.section-visible .project-card:nth-child(9) { transition-delay: 1000ms; }
+
+/* ============================================
+   SECTION TRANSITION OVERLAY (cinema feel)
+   ============================================ */
+.section-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+  background: var(--bg-color);
+  transition: opacity 0.4s ease;
+}
+
+.section-transition-overlay.transitioning {
+  opacity: 0.15;
+}
+
+/* ============================================
+   LATERAL DOT INDICATORS (Apple Style)
+   ============================================ */
+.section-dots {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 90;
+}
+
+.section-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.5s var(--apple-ease);
+  position: relative;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.section-dot::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 50%;
+}
+
+.section-dot:hover {
+  background: rgba(0, 0, 0, 0.3);
+  transform: scale(1.3);
+}
+
+.section-dot.active {
+  background: var(--accent-color);
+  transform: scale(1.4);
+  box-shadow: 0 0 12px rgba(0, 113, 227, 0.4);
+}
+
+.section-dot-label {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s var(--apple-ease);
+  transform: translateY(-50%) translateX(5px);
+}
+
+.section-dot:hover .section-dot-label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
 .nav-bar {
   position: fixed;
   top: 20px;
@@ -254,7 +493,9 @@ img {
   color: var(--accent-color);
 }
 
-/* Buttons */
+/* ============================================
+   BUTTONS
+   ============================================ */
 .btn-primary {
   background-color: var(--accent-color);
   color: white;
@@ -294,7 +535,9 @@ img {
   background-color: rgba(0,0,0,0.08);
 }
 
-/* Hero Section */
+/* ============================================
+   HERO SECTION
+   ============================================ */
 .hero-section {
   padding-top: 100px;
   min-height: 100vh;
@@ -408,7 +651,9 @@ img {
   border-radius: var(--border-radius-lg);
 }
 
-/* Skills Bento */
+/* ============================================
+   SKILLS BENTO
+   ============================================ */
 .skills-bento {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -429,11 +674,11 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: all var(--transition-smooth);
+  cursor: default;
 }
 
 .skill-card:hover {
-  transform: translateY(-10px) scale(1.05);
+  transform: translateY(-10px) scale(1.05) !important;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -465,14 +710,16 @@ img {
   color: var(--text-primary);
 }
 
-/* Projects Bento Grid */
+/* ============================================
+   PROJECTS BENTO GRID
+   ============================================ */
 .projects-bento-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Default mobile: 1 column */
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
-/* Variaciones de tamaño para el estilo Bento */
+/* Bento size variations */
 @media (min-width: 768px) {
   .projects-bento-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -480,7 +727,6 @@ img {
   }
 }
 
-/* Variaciones de tamaño para el estilo Bento */
 @media (min-width: 1024px) {
   .projects-bento-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -501,14 +747,13 @@ img {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   cursor: pointer;
-  transition: all var(--transition-smooth);
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .project-card:hover {
-  transform: translateY(-5px) scale(1.01);
+  transform: translateY(-5px) scale(1.01) !important;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
@@ -519,10 +764,9 @@ img {
   min-height: 250px;
   position: relative;
   overflow: hidden;
-  background: #ebebeb; /* Color de fallback suave */
+  background: #ebebeb;
 }
 
-/* Las imágenes necesitan estar separadas de la tarjeta para las animaciones morphing fluidas */
 .project-card-image {
   width: 100%;
   height: 100%;
@@ -607,7 +851,9 @@ img {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Modal / Sheet View (Apple Style) */
+/* ============================================
+   MODAL / SHEET VIEW (Apple Style)
+   ============================================ */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -616,9 +862,9 @@ img {
   -webkit-backdrop-filter: blur(5px);
   z-index: 1000;
   display: flex;
-  align-items: flex-end; /* Sheet from bottom */
+  align-items: flex-end;
   justify-content: center;
-  padding-top: 40px; /* Space from top */
+  padding-top: 40px;
   animation: overlay-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -638,8 +884,8 @@ img {
   height: 95vh;
   border-radius: 32px 32px 0 0;
   overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -649,10 +895,9 @@ img {
 }
 
 .modal-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-/* Apple-style Modal Animations */
 @keyframes overlay-fade-in {
   from {
     opacity: 0;
@@ -727,7 +972,6 @@ img {
   border: none;
 }
 
-/* Estilos específicos para imágenes para mantener el look premium con bordes y sombras */
 img.modal-media {
   max-width: 90%;
   max-height: 85%;
@@ -735,7 +979,6 @@ img.modal-media {
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-/* Asegurar que el iframe de YouTube ocupe el espacio correcto */
 iframe.modal-media {
   width: 100%;
   height: 100%;
@@ -990,6 +1233,9 @@ iframe.modal-media {
   letter-spacing: 0.02em;
 }
 
+/* ============================================
+   FOOTER
+   ============================================ */
 .footer {
   text-align: center;
   padding: 80px 20px 40px;
@@ -1077,8 +1323,23 @@ iframe.modal-media {
   letter-spacing: 0.01em;
 }
 
+/* ============================================
+   SCROLL PROGRESS BAR (top of screen)
+   ============================================ */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), #42a5f5);
+  z-index: 200;
+  transition: width 0.3s var(--apple-ease);
+  border-radius: 0 2px 2px 0;
+}
 
-/* Mobile Responsiveness */
+/* ============================================
+   MOBILE RESPONSIVENESS
+   ============================================ */
 @media (max-width: 768px) {
   .nav-links.desktop-only {
     display: none;
@@ -1102,7 +1363,7 @@ iframe.modal-media {
     justify-content: center;
   }
   
-  .section-padding {
+  .section-inner {
     padding: 80px 20px;
   }
   
@@ -1133,6 +1394,15 @@ iframe.modal-media {
   }
   
   .logo-lastname {
+    display: none;
+  }
+
+  /* Hide dots on mobile, use navbar instead */
+  .section-dots {
+    display: none;
+  }
+
+  .section-dot-label {
     display: none;
   }
 }

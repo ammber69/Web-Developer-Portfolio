@@ -40,6 +40,26 @@ Características clave:
     githubUrl: '#'
   },
   {
+    id: 104,
+    title: 'Portal de Reclutamiento & ATS Nissan Gasme',
+    description: `Sistema integral de reclutamiento desarrollado para Nissan Gasme que digitaliza y centraliza todo el proceso de atracción y selección de talento. Incluye un portal público de postulación para candidatos y un ATS (Applicant Tracking System) interno para que los reclutadores gestionen el seguimiento completo de cada vacante y postulante en tiempo real.
+
+Objetivo principal:
+Eliminar procesos manuales y dispersos de reclutamiento, centralizando la gestión de vacantes, postulaciones y seguimiento de candidatos en una sola plataforma eficiente y trazable.
+
+Características clave:
+• Portal de postulación: Interfaz pública donde los candidatos consultan vacantes disponibles y envían su postulación de forma directa.
+• ATS para reclutadores: Panel de seguimiento interno con flujos de selección, estados de candidatos, filtros avanzados y trazabilidad completa del proceso.
+• Gestión de vacantes: Creación, publicación y administración centralizada de todas las posiciones abiertas en la organización.
+• Flujos de selección configurables: Etapas personalizables del proceso de reclutamiento con visibilidad en tiempo real del avance de cada candidato.
+• Dashboard de métricas: Indicadores clave de rendimiento del proceso de reclutamiento para la toma de decisiones estratégicas.`,
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1000',
+    youtubeId: 'wecQMx2WSl4',
+    technologies: ['React', 'Node.js', 'ATS', 'Recruitment', 'HR Tech'],
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  {
     id: 4,
     title: 'Web Publicitaria El Merengue',
     description: "Desarrollo de plataforma web para 'El Merengue', empresa líder en repostería y venta de insumos. Incluye catálogo interactivo, gestión de productos y una interfaz visualmente atractiva diseñada para maximizar la conversión y el alcance publicitario de la marca.",
