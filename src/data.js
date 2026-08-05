@@ -1,11 +1,75 @@
+export const services = [
+  {
+    id: 1,
+    title: 'Desarrollo de Plataformas Web',
+    icon: '🖥️',
+    description: 'Sistemas full-stack escalables para empresas, integrando UI/UX de alto nivel y arquitecturas sólidas.'
+  },
+  {
+    id: 2,
+    title: 'Análisis de Datos e IA',
+    icon: '📊',
+    description: 'Dashboards ejecutivos e inteligencia comercial para convertir métricas complejas en decisiones estratégicas.'
+  },
+  {
+    id: 3,
+    title: 'Automatización de Procesos',
+    icon: '⚙️',
+    description: 'Eliminación de tareas manuales con software a medida, sincronización en tiempo real e integración de sistemas.'
+  },
+  {
+    id: 4,
+    title: 'Infraestructura & Soporte TI',
+    icon: '🛡️',
+    description: 'Plataformas ITSM, gestión centralizada de activos, monitoreo de dispositivos y gestión de SLAs.'
+  }
+];
+
+export const categorizedSkills = [
+  {
+    category: 'Frontend',
+    skills: [
+      { name: 'JavaScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
+      { name: 'TypeScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+      { name: 'React', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+      { name: 'Next.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' }
+    ]
+  },
+  {
+    category: 'Backend & Real-Time',
+    skills: [
+      { name: 'Node.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+      { name: 'Python', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+      { name: 'Java', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
+      { name: 'WebSockets', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg' }
+    ]
+  },
+  {
+    category: 'Data & Analytics',
+    skills: [
+      { name: 'PostgreSQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+      { name: 'SQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
+      { name: 'Análisis de Datos', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg' }
+    ]
+  },
+  {
+    category: 'DevOps & Infraestructura',
+    skills: [
+      { name: 'Docker', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+      { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+      { name: 'Linux', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg' }
+    ]
+  }
+];
+
 export const projectsData = [
   {
     id: 6,
     title: 'Gestión de Servicios TI (GLPI)',
-    description: `Diseño, configuración e implementación desde cero de una plataforma ITSM basada en GLPI para una organización de más de 100 usuarios. El proyecto incluyó catálogo de servicios, gestión de activos, SLAs, flujos de atención y un programa de adopción cultural del sistema.
+    description: `Diseño, configuración e implementación desde cero de una plataforma ITSM basada en GLPI para una organización de más de 300 usuarios. El proyecto incluyó catálogo de servicios, gestión de activos, SLAs, flujos de atención y un programa de adopción cultural del sistema.
 
 Logro principal:
-Reducción notable en tiempos de atención a usuarios al pasar de un proceso informal (correo/verbal) a un sistema estructurado con prioridades, SLAs y trazabilidad completa de cada solicitud. (+100 Usuarios atendidos, 3-6 Meses de implementación).
+Reducción notable en tiempos de atención a usuarios al pasar de un proceso informal (correo/verbal) a un sistema estructurado con prioridades, SLAs y trazabilidad completa de cada solicitud. (+300 Usuarios atendidos, 3-6 Meses de implementación).
 
 Entregables clave:
 • Catálogo de servicios TI: Definición y clasificación de servicios disponibles.
@@ -73,7 +137,7 @@ Características clave:
   },
   {
     id: 101,
-    title: 'Data Lake & NissanIQ Executive Sales Intelligence Platform',
+    title: 'Data Lake & NissanIQ — Inteligencia Comercial Ejecutiva',
     description: 'Dashboard ejecutivo de inteligencia comercial desarrollado para Nissan Gasme, que centraliza y transforma datos brutos del pipeline digital en visualizaciones estratégicas de alto impacto. Resuelve el problema de dispersión de datos entre agencias, equipos y leads individuales, convirtiendo métricas crudas del sistema Komo en decisiones accionables para directivos en tiempo real.\n\nIncluye análisis de rendimiento vs. benchmark nacional, trazabilidad completa del embudo de conversión, y un asistente IA integrado para exploración asistida de métricas. Diseñado con estética ejecutiva premium (Glassmorphism + sistema de temas dinámico), pensado para tomadores de decisiones, no para analistas.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
     youtubeId: 'vh00t8_6vWA',
@@ -83,7 +147,7 @@ Características clave:
   },
   {
     id: 102,
-    title: 'Nissan AdControl Centralized Multi Agency Advertising Network',
+    title: 'Nissan AdControl — Red Publicitaria Multi-Agencia',
     description: 'Solución empresarial robusta diseñada para la gestión centralizada y distribución de contenido publicitario en tiempo real para una red de 6 agencias Nissan. Este sistema permite la sincronización instantánea de campañas en pantallas digitales, eliminando la latencia en cambios de precios o promociones y erradicando errores de implementación manual.\n\nImpacto: Centralización total de activos, reducción drástica de costos operativos y eliminación del 100% de errores de publicación manual entre múltiples sucursales.',
     image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000',
     youtubeIds: ['gS6SZXqtujk', 'kTS8-nAld1I'],
@@ -93,7 +157,7 @@ Características clave:
   },
   {
     id: 103,
-    title: 'CheckCore Centralización de Checadores Nissan Gasme',
+    title: 'CheckCore — Centralización de Checadores Nissan',
     description: 'Sistema web para la gestión centralizada de todos los checadores biométricos de Nissan Gasme. Incluye interfaz moderna e intuitiva, automatización del cálculo de faltas y retardos, dashboards con datos clave para dirección, y un sistema de monitoreo con auto-reparación remota que detecta y corrige anomalías en los dispositivos sin necesidad de intervención física del equipo de soporte.\n\nImpacto: Ahorro significativo de horas de trabajo manual, reducción de errores y eliminación de tiempos muertos por fallas en equipos remotos.',
     image: '/checkcore_preview.png',
     youtubeId: 'INVFL_my0KA',
@@ -110,33 +174,8 @@ Características clave:
     technologies: ['Python', 'Pandas', 'Scikit-learn', 'React'],
     liveUrl: '#',
     githubUrl: '#'
-  },
-  {
-    id: 2,
-    title: 'Plataforma de Donaciones de Sangre Ángeles Rojos',
-    description: "Panel administrativo y gestor de la red social de donaciones sanguíneas 'Ángeles Rojos'. Permite la gestión integral de donantes, solicitudes de sangre, logística y notificaciones en tiempo real, actuando como el núcleo operativo de la plataforma social.",
-    images: [
-      '/3.png', '/4.png', '/6.png', '/7.png', '/8.png', 
-      '/9.png', '/10.png', '/12.png', '/13.png', '/14.png'
-    ],
-    technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
-    liveUrl: '#',
-    githubUrl: '#'
   }
 ];
 
-export const skills = [
-  { name: 'JavaScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', level: 95 },
-  { name: 'TypeScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', level: 85 },
-  { name: 'Python', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', level: 90 },
-  { name: 'Java', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', level: 80 },
-  { name: 'React', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', level: 95 },
-  { name: 'Next.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', level: 85 },
-  { name: 'Node.js', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', level: 85 },
-  { name: 'PostgreSQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', level: 80 },
-  { name: 'Docker', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', level: 75 },
-  { name: 'Git', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', level: 90 },
-  { name: 'Análisis de Datos', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg', level: 85 },
-  { name: 'SQL', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', level: 85 },
-  { name: 'Linux', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', level: 80 },
-];
+// Flat array fallback if needed elsewhere
+export const skills = categorizedSkills.flatMap(c => c.skills);

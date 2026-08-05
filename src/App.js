@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, Code, Menu, Lock, MessageSquare, Phone, Mail } from 'lucide-react';
-import { projectsData, skills } from './data';
+import { ChevronLeft, ChevronRight, ChevronDown, X, Code, Menu, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2 } from 'lucide-react';
+import { projectsData, services, categorizedSkills } from './data';
 import "./App.css";
 
 // ============================================
@@ -178,19 +178,19 @@ function App() {
       const now = Date.now();
       const sectionId = SECTIONS[currentSectionIndex]?.id;
 
-      // Special handling for projects section (allow internal scroll)
+      // Special handling for projects section (allows internal scroll for grid + footer)
       if (sectionId === 'projects') {
-        const projectsEl = document.getElementById('projects');
-        if (!projectsEl) return;
+        const currentEl = document.getElementById('projects');
+        if (!currentEl) return;
 
         const wrapperScrollTop = wrapper.scrollTop;
-        const projectsTop = projectsEl.offsetTop;
+        const currentTop = currentEl.offsetTop;
         const wrapperHeight = wrapper.clientHeight;
         const totalScrollable = wrapper.scrollHeight - wrapperHeight;
-        const scrolledPastProjects = wrapperScrollTop - projectsTop;
+        const scrolledPastCurrent = wrapperScrollTop - currentTop;
 
-        // Scrolling UP from top of projects → go back to skills
-        if (e.deltaY < 0 && scrolledPastProjects <= 5) {
+        // Scrolling UP from top of projects → snap back to skills
+        if (e.deltaY < 0 && scrolledPastCurrent <= 5) {
           e.preventDefault();
           if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
           lastScrollTime.current = now;
@@ -198,17 +198,17 @@ function App() {
           return;
         }
 
-        // At bottom of everything → block further scroll down
+        // In projects at bottom of everything → block further scroll down
         if (e.deltaY > 0 && wrapperScrollTop >= totalScrollable - 5) {
           e.preventDefault();
           return;
         }
 
-        // Otherwise allow natural scroll within projects
+        // Allow natural internal scroll inside projects grid
         return;
       }
 
-      // For hero & skills: full scroll hijacking
+      // For Hero & Skills: strict section-by-section snap hijacking
       e.preventDefault();
 
       if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
@@ -245,13 +245,12 @@ function App() {
       const deltaY = touchStartY.current - touchEndY;
       const sectionId = SECTIONS[currentSectionIndex]?.id;
 
-      // For projects section, only intercept swipe up at top
       if (sectionId === 'projects') {
-        const projectsEl = document.getElementById('projects');
-        if (!projectsEl) return;
-        const scrolledPastProjects = wrapper.scrollTop - projectsEl.offsetTop;
+        const currentEl = document.getElementById('projects');
+        if (!currentEl) return;
+        const scrolledPastCurrent = wrapper.scrollTop - currentEl.offsetTop;
 
-        if (deltaY < -TOUCH_THRESHOLD && scrolledPastProjects <= 5) {
+        if (deltaY < -TOUCH_THRESHOLD && scrolledPastCurrent <= 5) {
           const now = Date.now();
           if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
           lastScrollTime.current = now;
@@ -260,7 +259,6 @@ function App() {
         return;
       }
 
-      // For hero & skills
       const now = Date.now();
       if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
 
@@ -295,7 +293,6 @@ function App() {
       switch (e.key) {
         case 'ArrowDown':
         case ' ':
-          // In projects section, allow natural scroll unless at hero/skills
           if (sectionId === 'projects') return;
           e.preventDefault();
           navigateToSection(currentSectionIndex + 1);
@@ -303,9 +300,9 @@ function App() {
         case 'ArrowUp':
           if (sectionId === 'projects') {
             const wrapper = scrollWrapperRef.current;
-            const projectsEl = document.getElementById('projects');
-            if (wrapper && projectsEl) {
-              const scrolledPast = wrapper.scrollTop - projectsEl.offsetTop;
+            const currentEl = document.getElementById('projects');
+            if (wrapper && currentEl) {
+              const scrolledPast = wrapper.scrollTop - currentEl.offsetTop;
               if (scrolledPast <= 5) {
                 e.preventDefault();
                 navigateToSection(currentSectionIndex - 1);
@@ -333,7 +330,6 @@ function App() {
     if (!wrapper) return;
 
     if (SECTIONS[currentSectionIndex]?.id === 'projects') {
-      // Allow internal scrolling for projects
       wrapper.classList.add('projects-scrollable');
     } else {
       wrapper.classList.remove('projects-scrollable');
@@ -341,10 +337,9 @@ function App() {
   }, [currentSectionIndex]);
 
   // ============================================
-  // INITIAL SECTION VISIBILITY (hero starts visible)
+  // INITIAL SECTION VISIBILITY
   // ============================================
   useEffect(() => {
-    // Make hero visible immediately on mount
     setVisibleSections(new Set(['hero']));
   }, []);
 
@@ -380,7 +375,6 @@ function App() {
     }
   };
 
-  // Nav click → navigate to section
   const scrollToSection = (sectionId) => {
     const targetIndex = SECTIONS.findIndex(s => s.id === sectionId);
     if (targetIndex !== -1) {
@@ -389,19 +383,15 @@ function App() {
     setIsMobileMenuOpen(false);
   };
 
-  // Dot click → navigate to section
   const handleDotClick = useCallback((index) => {
     navigateToSection(index);
   }, [navigateToSection]);
 
-  // ============================================
-  // PREVENT BODY SCROLL WHEN MODAL IS OPEN
-  // ============================================
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'hidden'; // Always hidden (fullscreen scroll)
+      document.body.style.overflow = 'hidden';
     }
     return () => {
       document.body.style.overflow = 'hidden';
@@ -472,7 +462,7 @@ function App() {
         </div>
       </div>
 
-      {/* Scroll Wrapper — programmatically controlled */}
+      {/* Scroll Wrapper */}
       <div className="scroll-wrapper" ref={scrollWrapperRef}>
         {/* Hero Section */}
         <section id="hero" className={`hero-section fullscreen-section ${visibleSections.has('hero') ? 'section-visible' : ''}`}>
@@ -484,17 +474,35 @@ function App() {
                   <span className="text-gradient">Ingeniero de Software y Analista de Datos.</span>
                 </h1>
                 <p className="hero-subtitle reveal-element reveal-delay-1">
-                  Diseño y construyo soluciones digitales premium, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
+                  Diseño y construyo soluciones digitales, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
                 </p>
-                <div className="hero-actions reveal-element reveal-delay-2">
-                  <a href="/CV Monterrosas Solis Jose Antonio.pdf" className="btn-primary" download="CV Monterrosas Solis Jose Antonio.pdf">
-                    Descargar CV
-                  </a>
-                  <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-secondary">
+                
+                {/* Stats Bar */}
+                <div className="hero-stats reveal-element reveal-delay-2">
+                  <div className="stat-card">
+                    <span className="stat-number">5+</span>
+                    <span className="stat-label">Sistemas Empresariales</span>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-number">6</span>
+                    <span className="stat-label">Agencias Conectadas</span>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-number">300+</span>
+                    <span className="stat-label">Empleados Impactados</span>
+                  </div>
+                </div>
+
+                <div className="hero-actions reveal-element reveal-delay-3">
+                  <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-primary">
                     Ver Proyectos
+                  </a>
+                  <a href="/CV Monterrosas Solis Jose Antonio.pdf" className="btn-secondary" download="CV Monterrosas Solis Jose Antonio.pdf">
+                    Descargar CV
                   </a>
                 </div>
               </div>
+
               <div className="hero-visual">
                 <div className="hero-avatar-container reveal-scale reveal-delay-1">
                   <img src="/PerfilIMG.png" alt="Antonio" className="hero-avatar" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
@@ -502,23 +510,48 @@ function App() {
               </div>
             </div>
           </div>
+
+          {/* Bouncing Scroll Hint */}
+          <div className="scroll-hint reveal-element reveal-delay-4" onClick={() => scrollToSection('skills')}>
+            <span>Scroll</span>
+            <ChevronDown className="scroll-hint-icon" size={18} />
+          </div>
         </section>
 
-        {/* Skills Section */}
+        {/* Skills Section — Fusion "Lo que hago" + Tecnologías */}
         <section id="skills" className={`skills-section fullscreen-section ${visibleSections.has('skills') ? 'section-visible' : ''}`}>
           <div className="section-inner">
             <div className="section-header reveal-element reveal-delay-0">
-              <h2>Habilidades Técnicas</h2>
-              <p>Herramientas y tecnologías que utilizo para dar vida a las ideas.</p>
+              <h2>Servicios & Habilidades Técnicas</h2>
+              <p>Soluciones integrales de software y el conjunto de tecnologías que utilizo para construirlas.</p>
             </div>
             
-            <div className="skills-bento reveal-element reveal-delay-1">
-              {skills.map((skill, index) => (
-                <div key={index} className="skill-card">
-                  <div className="skill-icon-wrapper">
-                    <img src={skill.img} alt={skill.name} className="skill-icon" />
+            {/* Parte 1: Lo que hago */}
+            <div className="services-grid reveal-element reveal-delay-1">
+              {services.map((service) => (
+                <div key={service.id} className="service-card">
+                  <span className="service-icon">{service.icon}</span>
+                  <h3 className="service-title">{service.title}</h3>
+                  <p className="service-desc">{service.description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Parte 2: Tecnologías agrupadas por categoría */}
+            <div className="tech-categories-container reveal-element reveal-delay-2">
+              {categorizedSkills.map((cat, catIdx) => (
+                <div key={catIdx} className="category-group">
+                  <h4 className="category-title">{cat.category}</h4>
+                  <div className="skills-category-bento">
+                    {cat.skills.map((skill, skillIdx) => (
+                      <div key={skillIdx} className="skill-card">
+                        <div className="skill-icon-wrapper">
+                          <img src={skill.img} alt={skill.name} className="skill-icon" />
+                        </div>
+                        <span className="skill-name">{skill.name}</span>
+                      </div>
+                    ))}
                   </div>
-                  <span className="skill-name">{skill.name}</span>
                 </div>
               ))}
             </div>
@@ -548,9 +581,22 @@ function App() {
           {/* Footer integrated into projects section */}
           <footer className="footer">
             <div className="footer-content">
+              {/* Mini About Me Card */}
+              <div className="about-me-card">
+                <div className="about-me-header">Acerca de mí & Disponibilidad</div>
+                <p className="about-me-body">
+                  Ingeniero de software en Nissan Gasme. Especializado en desarrollo web full-stack, automatización de procesos e inteligencia de datos. Disponible para proyectos freelance selectos con empresas y clientes particulares.
+                </p>
+                <div className="about-me-pills">
+                  <span className="about-pill"><Building2 size={14} /> Nissan Gasme (Presencial)</span>
+                  <span className="about-pill"><Briefcase size={14} /> Freelance (Remoto)</span>
+                  <span className="about-pill"><MapPin size={14} /> Córdoba, Ver., México</span>
+                </div>
+              </div>
+
               <div className="footer-heading">
-                <h3>¿Tienes un proyecto en mente?</h3>
-                <p>Hablemos y hagamos algo increíble juntos.</p>
+                <h3>¿Necesitas un sistema a medida?</h3>
+                <p>Hablemos de tu próximo proyecto digital.</p>
               </div>
               <div className="footer-contact">
                 <a href="tel:+522712831339" className="footer-contact-item">
@@ -721,10 +767,6 @@ function App() {
               </div>
 
               <div className="modal-actions-row">
-                <div className="private-project-badge">
-                  <Lock size={16} />
-                  <span>Proyecto Privado / Confidencial</span>
-                </div>
                 <a href="https://wa.me/522712831339" className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
                   <MessageSquare size={18} /> Solicitar Demo
                 </a>
