@@ -6,19 +6,22 @@ import "./App.css";
 // ============================================
 // SECTION CONFIGURATION
 // ============================================
-const SECTIONS = [
-  { id: 'hero', label: 'Inicio' },
-  { id: 'skills', label: 'Habilidades' },
-  { id: 'projects', label: 'Proyectos' },
-];
-
 const SCROLL_COOLDOWN = 1200; // ms between section transitions
 const TOUCH_THRESHOLD = 50; // minimum px for swipe detection
+
+const getSections = (lang) => [
+  { id: 'hero',     label: lang === 'en' ? 'Home'       : 'Inicio'      },
+  { id: 'skills',   label: lang === 'en' ? 'Skills'     : 'Habilidades' },
+  { id: 'projects', label: lang === 'en' ? 'Projects'   : 'Proyectos'   },
+];
 
 // ============================================
 // PROJECT CARD COMPONENT
 // ============================================
-const ProjectCard = React.memo(({ project, index, onClick }) => {
+const ProjectCard = React.memo(({ project, index, onClick, lang }) => {
+  const title = lang === 'en' ? (project.titleEn || project.title) : project.title;
+  const techs = lang === 'en' ? (project.technologiesEn || project.technologies) : project.technologies;
+
   return (
     <div 
       className={`project-card bento-item-${index % 4}`}
@@ -29,7 +32,7 @@ const ProjectCard = React.memo(({ project, index, onClick }) => {
           <div className="youtube-thumbnail-wrapper" style={{ width: '100%', height: '100%', position: 'relative' }}>
             <img 
               src={`https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/maxresdefault.jpg`}
-              alt={project.title}
+              alt={title}
               className="project-card-image"
               loading="lazy"
               onError={(e) => { e.target.src = `https://img.youtube.com/vi/${(project.youtubeIds && project.youtubeIds[0]) || project.youtubeId}/hqdefault.jpg` }}
@@ -50,27 +53,29 @@ const ProjectCard = React.memo(({ project, index, onClick }) => {
         ) : (
           <img 
             src={project.image || (project.images && project.images[0])} 
-            alt={project.title} 
+            alt={title} 
             className="project-card-image"
             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800' }}
             loading="lazy"
           />
         )}
         <div className="project-card-overlay">
-          <span className="view-project-label">Ver Detalles</span>
+          <span className="view-project-label">
+            {lang === 'en' ? 'View Details' : 'Ver Detalles'}
+          </span>
         </div>
       </div>
       <div className="project-card-content">
         <h3 className="project-card-title">
-          {project.title}
+          {title}
         </h3>
         <div className="project-card-tech">
-          {project.technologies.slice(0, 3).map((tech, i) => (
+          {techs.slice(0, 3).map((tech, i) => (
             <span key={i} className="tech-pill">
               {tech}
             </span>
           ))}
-          {project.technologies.length > 3 && <span className="tech-pill">+{project.technologies.length - 3}</span>}
+          {techs.length > 3 && <span className="tech-pill">+{techs.length - 3}</span>}
         </div>
       </div>
     </div>
@@ -78,16 +83,32 @@ const ProjectCard = React.memo(({ project, index, onClick }) => {
 });
 
 // ============================================
+// LANGUAGE TOGGLE BUTTON
+// ============================================
+const LangToggle = ({ lang, onToggle }) => (
+  <button
+    className="lang-toggle"
+    onClick={onToggle}
+    aria-label="Toggle language / Cambiar idioma"
+    title={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a inglés'}
+  >
+    <span className={`lang-option ${lang === 'en' ? 'lang-active' : ''}`}>EN</span>
+    <span className="lang-divider">|</span>
+    <span className={`lang-option ${lang === 'es' ? 'lang-active' : ''}`}>ES</span>
+  </button>
+);
+
+// ============================================
 // SECTION DOT INDICATORS
 // ============================================
-const SectionDots = ({ activeIndex, onDotClick }) => (
+const SectionDots = ({ activeIndex, onDotClick, sections }) => (
   <div className="section-dots">
-    {SECTIONS.map((section, i) => (
+    {sections.map((section, i) => (
       <button
         key={section.id}
         className={`section-dot ${i === activeIndex ? 'active' : ''}`}
         onClick={() => onDotClick(i)}
-        aria-label={`Ir a ${section.label}`}
+        aria-label={`Go to ${section.label}`}
       >
         <span className="section-dot-label">{section.label}</span>
       </button>
@@ -109,6 +130,7 @@ const ScrollProgressBar = ({ progress }) => (
 // MAIN APP COMPONENT
 // ============================================
 function App() {
+  const [lang, setLang] = useState('en');
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -124,7 +146,12 @@ function App() {
   const touchStartY = useRef(0);
   const isProjectsInternalScroll = useRef(false);
 
+  const SECTIONS = getSections(lang);
   const activeSection = SECTIONS[currentSectionIndex]?.id || 'hero';
+
+  const toggleLang = useCallback(() => {
+    setLang(prev => prev === 'en' ? 'es' : 'en');
+  }, []);
 
   // ============================================
   // NAVIGATE TO SECTION (core function)
@@ -162,7 +189,7 @@ function App() {
     // Update progress
     const progress = ((targetIndex) / (SECTIONS.length - 1)) * 100;
     setScrollProgress(progress);
-  }, [currentSectionIndex]);
+  }, [currentSectionIndex, SECTIONS]);
 
   // ============================================
   // SCROLL HIJACKING (wheel event)
@@ -225,7 +252,7 @@ function App() {
 
     wrapper.addEventListener('wheel', handleWheel, { passive: false });
     return () => wrapper.removeEventListener('wheel', handleWheel);
-  }, [currentSectionIndex, selectedProject, navigateToSection]);
+  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS]);
 
   // ============================================
   // TOUCH SUPPORT (swipe detection)
@@ -279,7 +306,7 @@ function App() {
       wrapper.removeEventListener('touchstart', handleTouchStart);
       wrapper.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [currentSectionIndex, selectedProject, navigateToSection]);
+  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS]);
 
   // ============================================
   // KEYBOARD SUPPORT
@@ -320,7 +347,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentSectionIndex, selectedProject, navigateToSection]);
+  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS]);
 
   // ============================================
   // ENABLE/DISABLE SCROLL WRAPPER OVERFLOW
@@ -334,7 +361,7 @@ function App() {
     } else {
       wrapper.classList.remove('projects-scrollable');
     }
-  }, [currentSectionIndex]);
+  }, [currentSectionIndex, SECTIONS]);
 
   // ============================================
   // INITIAL SECTION VISIBILITY
@@ -415,7 +442,12 @@ function App() {
     indicator.style.width = `${linkRect.width + 20}px`;
     indicator.style.left = `${linkRect.left - containerRect.left - 10}px`;
     indicator.style.opacity = '1';
-  }, [activeSection]);
+  }, [activeSection, lang]);
+
+  // Helpers for bilingual content in modal
+  const getProjectTitle = (project) => lang === 'en' ? (project.titleEn || project.title) : project.title;
+  const getProjectDesc = (project) => lang === 'en' ? (project.descriptionEn || project.description) : project.description;
+  const getProjectTechs = (project) => lang === 'en' ? (project.technologiesEn || project.technologies) : project.technologies;
 
   // ============================================
   // RENDER
@@ -429,7 +461,7 @@ function App() {
       <div className={`section-transition-overlay ${isTransitioning ? 'transitioning' : ''}`} />
 
       {/* Lateral Dot Indicators */}
-      <SectionDots activeIndex={currentSectionIndex} onDotClick={handleDotClick} />
+      <SectionDots activeIndex={currentSectionIndex} onDotClick={handleDotClick} sections={SECTIONS} />
 
       {/* Navigation */}
       <nav className="nav-bar">
@@ -442,23 +474,38 @@ function App() {
           </div>
           <div className="nav-links desktop-only" ref={navLinksRef}>
             <div className="liquid-glass-indicator" ref={glassIndicatorRef} />
-            <a href="#hero" data-section="hero" className={activeSection === 'hero' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
-            <a href="#skills" data-section="skills" className={activeSection === 'skills' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
-            <a href="#projects" data-section="projects" className={activeSection === 'projects' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+            <a href="#hero" data-section="hero" className={activeSection === 'hero' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>
+              {lang === 'en' ? 'Home' : 'Inicio'}
+            </a>
+            <a href="#skills" data-section="skills" className={activeSection === 'skills' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>
+              {lang === 'en' ? 'Skills' : 'Habilidades'}
+            </a>
+            <a href="#projects" data-section="projects" className={activeSection === 'projects' ? 'nav-active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>
+              {lang === 'en' ? 'Projects' : 'Proyectos'}
+            </a>
           </div>
           
-          <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="nav-right-controls">
+            <LangToggle lang={lang} onToggle={toggleLang} />
+            <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
       <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-content">
-          <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>Inicio</a>
-          <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Habilidades</a>
-          <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>Proyectos</a>
+          <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}>
+            {lang === 'en' ? 'Home' : 'Inicio'}
+          </a>
+          <a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>
+            {lang === 'en' ? 'Skills' : 'Habilidades'}
+          </a>
+          <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>
+            {lang === 'en' ? 'Projects' : 'Proyectos'}
+          </a>
         </div>
       </div>
 
@@ -470,35 +517,46 @@ function App() {
             <div className="hero-grid">
               <div className="hero-text">
                 <h1 className="hero-title reveal-element reveal-delay-0">
-                  Hola, soy Antonio. <br/>
-                  <span className="text-gradient">Ingeniero de Software y Analista de Datos.</span>
+                  {lang === 'en'
+                    ? <>Hi, I'm Antonio. <br/><span className="text-gradient">Software Engineer & Data Analyst.</span></>
+                    : <>Hola, soy Antonio. <br/><span className="text-gradient">Ingeniero de Software y Analista de Datos.</span></>
+                  }
                 </h1>
                 <p className="hero-subtitle reveal-element reveal-delay-1">
-                  Diseño y construyo soluciones digitales, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.
+                  {lang === 'en'
+                    ? 'I design and build digital solutions, combining creativity, clean code, and exceptional user experiences. Specialized in data analytics, identifying opportunities, and optimizing business processes.'
+                    : 'Diseño y construyo soluciones digitales, combinando creatividad, código limpio y experiencias de usuario excepcionales. Especialista en análisis de datos, identificando áreas de oportunidad y optimizando procesos empresariales.'
+                  }
                 </p>
                 
                 {/* Stats Bar */}
                 <div className="hero-stats reveal-element reveal-delay-2">
                   <div className="stat-card">
                     <span className="stat-number">5+</span>
-                    <span className="stat-label">Sistemas Empresariales</span>
+                    <span className="stat-label">
+                      {lang === 'en' ? 'Enterprise Systems' : 'Sistemas Empresariales'}
+                    </span>
                   </div>
                   <div className="stat-card">
                     <span className="stat-number">6</span>
-                    <span className="stat-label">Agencias Conectadas</span>
+                    <span className="stat-label">
+                      {lang === 'en' ? 'Connected Agencies' : 'Agencias Conectadas'}
+                    </span>
                   </div>
                   <div className="stat-card">
                     <span className="stat-number">300+</span>
-                    <span className="stat-label">Empleados Impactados</span>
+                    <span className="stat-label">
+                      {lang === 'en' ? 'Employees Impacted' : 'Empleados Impactados'}
+                    </span>
                   </div>
                 </div>
 
                 <div className="hero-actions reveal-element reveal-delay-3">
                   <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} className="btn-primary">
-                    Ver Proyectos
+                    {lang === 'en' ? 'View Projects' : 'Ver Proyectos'}
                   </a>
-                  <a href="/CV Monterrosas Solis Jose Antonio.pdf" className="btn-secondary" download="CV Monterrosas Solis Jose Antonio.pdf">
-                    Descargar CV
+                  <a href="/Jose_Antonio_Monterrosas_CV.pdf" className="btn-secondary" download="Jose_Antonio_Monterrosas_CV.pdf">
+                    {lang === 'en' ? 'Download CV' : 'Descargar CV'}
                   </a>
                 </div>
               </div>
@@ -518,37 +576,48 @@ function App() {
           </div>
         </section>
 
-        {/* Skills Section — Fusion "Lo que hago" + Tecnologías */}
+        {/* Skills Section */}
         <section id="skills" className={`skills-section fullscreen-section ${visibleSections.has('skills') ? 'section-visible' : ''}`}>
           <div className="section-inner">
             <div className="section-header reveal-element reveal-delay-0">
-              <h2>Servicios & Habilidades Técnicas</h2>
-              <p>Soluciones integrales de software y el conjunto de tecnologías que utilizo para construirlas.</p>
+              <h2>{lang === 'en' ? 'Services & Technical Skills' : 'Servicios & Habilidades Técnicas'}</h2>
+              <p>{lang === 'en'
+                ? 'Comprehensive software solutions and the technology stack I use to build them.'
+                : 'Soluciones integrales de software y el conjunto de tecnologías que utilizo para construirlas.'
+              }</p>
             </div>
             
-            {/* Parte 1: Lo que hago */}
+            {/* Services */}
             <div className="services-grid reveal-element reveal-delay-1">
               {services.map((service) => (
                 <div key={service.id} className="service-card">
                   <span className="service-icon">{service.icon}</span>
-                  <h3 className="service-title">{service.title}</h3>
-                  <p className="service-desc">{service.description}</p>
+                  <h3 className="service-title">
+                    {lang === 'en' ? (service.titleEn || service.title) : service.title}
+                  </h3>
+                  <p className="service-desc">
+                    {lang === 'en' ? (service.descriptionEn || service.description) : service.description}
+                  </p>
                 </div>
               ))}
             </div>
 
-            {/* Parte 2: Tecnologías agrupadas por categoría */}
+            {/* Tech Categories */}
             <div className="tech-categories-container reveal-element reveal-delay-2">
               {categorizedSkills.map((cat, catIdx) => (
                 <div key={catIdx} className="category-group">
-                  <h4 className="category-title">{cat.category}</h4>
+                  <h4 className="category-title">
+                    {lang === 'en' ? (cat.categoryEn || cat.category) : cat.category}
+                  </h4>
                   <div className="skills-category-bento">
                     {cat.skills.map((skill, skillIdx) => (
                       <div key={skillIdx} className="skill-card">
                         <div className="skill-icon-wrapper">
-                          <img src={skill.img} alt={skill.name} className="skill-icon" />
+                          <img src={skill.img} alt={lang === 'en' ? (skill.nameEn || skill.name) : skill.name} className="skill-icon" />
                         </div>
-                        <span className="skill-name">{skill.name}</span>
+                        <span className="skill-name">
+                          {lang === 'en' ? (skill.nameEn || skill.name) : skill.name}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -562,8 +631,11 @@ function App() {
         <section id="projects" className={`projects-section fullscreen-section ${visibleSections.has('projects') ? 'section-visible' : ''}`}>
           <div className="section-inner">
             <div className="section-header reveal-element reveal-delay-0">
-              <h2>Proyectos Destacados</h2>
-              <p>Una selección de mi trabajo más reciente y relevante.</p>
+              <h2>{lang === 'en' ? 'Featured Projects' : 'Proyectos Destacados'}</h2>
+              <p>{lang === 'en'
+                ? 'A curated selection of my most recent and relevant work.'
+                : 'Una selección de mi trabajo más reciente y relevante.'
+              }</p>
             </div>
 
             <div className="projects-bento-grid">
@@ -573,6 +645,7 @@ function App() {
                   project={project}
                   index={index}
                   onClick={handleProjectClick}
+                  lang={lang}
                 />
               ))}
             </div>
@@ -583,20 +656,25 @@ function App() {
             <div className="footer-content">
               {/* Mini About Me Card */}
               <div className="about-me-card">
-                <div className="about-me-header">Acerca de mí & Disponibilidad</div>
+                <div className="about-me-header">
+                  {lang === 'en' ? 'About Me & Availability' : 'Acerca de mí & Disponibilidad'}
+                </div>
                 <p className="about-me-body">
-                  Ingeniero de software en Nissan Gasme. Especializado en desarrollo web full-stack, automatización de procesos e inteligencia de datos. Disponible para proyectos freelance selectos con empresas y clientes particulares.
+                  {lang === 'en'
+                    ? 'Software engineer at Nissan Gasme. Specialized in full-stack web development, process automation, and data intelligence. Available for selective freelance projects with businesses and individual clients.'
+                    : 'Ingeniero de software en Nissan Gasme. Especializado en desarrollo web full-stack, automatización de procesos e inteligencia de datos. Disponible para proyectos freelance selectos con empresas y clientes particulares.'
+                  }
                 </p>
                 <div className="about-me-pills">
-                  <span className="about-pill"><Building2 size={14} /> Nissan Gasme (Presencial)</span>
-                  <span className="about-pill"><Briefcase size={14} /> Freelance (Remoto)</span>
+                  <span className="about-pill"><Building2 size={14} /> Nissan Gasme ({lang === 'en' ? 'On-site' : 'Presencial'})</span>
+                  <span className="about-pill"><Briefcase size={14} /> Freelance ({lang === 'en' ? 'Remote' : 'Remoto'})</span>
                   <span className="about-pill"><MapPin size={14} /> Córdoba, Ver., México</span>
                 </div>
               </div>
 
               <div className="footer-heading">
-                <h3>¿Necesitas un sistema a medida?</h3>
-                <p>Hablemos de tu próximo proyecto digital.</p>
+                <h3>{lang === 'en' ? 'Need a custom system?' : '¿Necesitas un sistema a medida?'}</h3>
+                <p>{lang === 'en' ? "Let's talk about your next digital project." : 'Hablemos de tu próximo proyecto digital.'}</p>
               </div>
               <div className="footer-contact">
                 <a href="tel:+522712831339" className="footer-contact-item">
@@ -609,18 +687,18 @@ function App() {
                 </a>
                 <a href="https://wa.me/522712831339" className="footer-contact-item footer-cta" target="_blank" rel="noopener noreferrer">
                   <MessageSquare size={18} />
-                  <span>Escríbeme por WhatsApp</span>
+                  <span>{lang === 'en' ? 'Message me on WhatsApp' : 'Escríbeme por WhatsApp'}</span>
                 </a>
               </div>
               <div className="footer-bottom">
-                <p>© {new Date().getFullYear()} Antonio Monterrosas. Todos los derechos reservados.</p>
+                <p>© {new Date().getFullYear()} Antonio Monterrosas. {lang === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}</p>
               </div>
             </div>
           </footer>
         </section>
       </div>
 
-      {/* Detail Modal - Apple Style */}
+      {/* Detail Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={closeModal}>
           <div 
@@ -674,7 +752,7 @@ function App() {
                 <div className="modal-carousel">
                   <img 
                     src={selectedProject.images[currentImageIndex]} 
-                    alt={selectedProject.title} 
+                    alt={getProjectTitle(selectedProject)} 
                     className="modal-media"
                     onError={(e) => { e.target.src = selectedProject.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200' }}
                   />
@@ -693,7 +771,7 @@ function App() {
               ) : (
                 <img 
                   src={selectedProject.image} 
-                  alt={selectedProject.title} 
+                  alt={getProjectTitle(selectedProject)} 
                   className="modal-media"
                 />
               )}
@@ -702,11 +780,11 @@ function App() {
             <div className="modal-info-section">
               <div className="modal-info-header">
                 <h2 className="modal-title">
-                  {selectedProject.title}
+                  {getProjectTitle(selectedProject)}
                 </h2>
                 
                 <div className="modal-tech-list">
-                  {selectedProject.technologies.map((tech, i) => (
+                  {getProjectTechs(selectedProject).map((tech, i) => (
                     <span key={i} className="modal-tech-pill">
                       {tech}
                     </span>
@@ -715,7 +793,7 @@ function App() {
               </div>
 
               <div className="modal-description-content">
-                {selectedProject.description.split('\n\n').map((block, blockIdx) => {
+                {getProjectDesc(selectedProject).split('\n\n').map((block, blockIdx) => {
                   const lines = block.split('\n');
                   const hasBullets = lines.some(l => l.trim().startsWith('•'));
                   
@@ -747,7 +825,7 @@ function App() {
                   const isHeader = block.trim().endsWith(':') && block.trim().length < 60;
                   if (isHeader) return null;
                   
-                  const allBlocks = selectedProject.description.split('\n\n');
+                  const allBlocks = getProjectDesc(selectedProject).split('\n\n');
                   const prevBlock = blockIdx > 0 ? allBlocks[blockIdx - 1] : null;
                   const prevIsHeader = prevBlock && prevBlock.trim().endsWith(':') && prevBlock.trim().length < 60;
                   
@@ -768,7 +846,7 @@ function App() {
 
               <div className="modal-actions-row">
                 <a href="https://wa.me/522712831339" className="btn-primary modal-btn" target="_blank" rel="noopener noreferrer">
-                  <MessageSquare size={18} /> Solicitar Demo
+                  <MessageSquare size={18} /> {lang === 'en' ? 'Request a Demo' : 'Solicitar Demo'}
                 </a>
               </div>
             </div>
