@@ -33,6 +33,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   height: 100vh;
+  height: 100dvh;
   margin: 0;
 }
 
@@ -61,6 +62,7 @@ img {
 /* The scroll wrapper that gets programmatically scrolled */
 .scroll-wrapper {
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   position: relative;
   scroll-behavior: smooth;
@@ -83,6 +85,7 @@ img {
    ============================================ */
 .fullscreen-section {
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -94,7 +97,9 @@ img {
 
 .skills-section.fullscreen-section {
   min-height: 100vh;
+  min-height: 100dvh;
   height: 100vh;
+  height: 100dvh;
   justify-content: center;
   overflow: hidden;
   padding-top: 50px;
@@ -607,6 +612,7 @@ img {
 .hero-section {
   padding-top: 100px;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   position: relative;
@@ -1606,17 +1612,69 @@ iframe.modal-media {
    MOBILE RESPONSIVENESS
    ============================================ */
 @media (max-width: 768px) {
-  .skills-section.fullscreen-section {
+  /* ============================================
+     MOBILE: CSS scroll-snap nativo (sin JS)
+     El browser maneja el snap perfectamente,
+     sin saltos ni comportamiento errático.
+     ============================================ */
+  body {
+    overflow: hidden;
+  }
+
+  .app-container {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .scroll-wrapper {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /* CSS scroll-snap nativo — como Apple */
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-y: contain;
+  }
+
+  .scroll-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cada sección hace snap al inicio */
+  .fullscreen-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Projects: snap al inicio, scroll interno libre */
+  .projects-section.fullscreen-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
     min-height: auto;
+    height: auto;
+  }
+
+  /* Skills section scrollable si es necesario en mobile pequeño */
+  .skills-section.fullscreen-section {
+    min-height: 100vh;
+    min-height: 100dvh;
     height: auto;
     padding-top: 80px;
     padding-bottom: 40px;
+    overflow-y: auto;
+    scroll-snap-align: start;
   }
 
+  /* ============================================
+     HERO MOBILE: Foto PRIMERO, texto después
+     ============================================ */
   .nav-links.desktop-only {
     display: none;
   }
-  
+
   .mobile-menu-btn {
     display: block;
   }
@@ -1624,27 +1682,76 @@ iframe.modal-media {
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 40px;
+    gap: 24px;
+    /* Foto primero en mobile */
+    display: flex;
+    flex-direction: column;
   }
-  
+
+  /* Foto del hero: va ARRIBA en mobile */
+  .hero-visual {
+    order: -1;
+  }
+
+  /* Foto más compacta en mobile */
+  .hero-avatar-container {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+
   .hero-subtitle {
     margin: 0 auto 24px;
+    font-size: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
   }
 
   .hero-stats {
     justify-content: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
-  
+
+  .stat-card {
+    padding: 8px 12px;
+  }
+
   .hero-actions {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
-  
+
   .section-inner {
-    padding: 80px 20px;
+    padding: 80px 20px 40px;
   }
-  
+
+  /* ============================================
+     PERFORMANCE: Sin backdrop-filter en mobile
+     (es lo que más cuesta en GPU móvil)
+     ============================================ */
+  .skill-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .service-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .stat-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Mantener el navbar con blur (es crítico visualmente) */
+
   .services-grid {
     grid-template-columns: 1fr;
   }
@@ -1674,7 +1781,7 @@ iframe.modal-media {
     gap: 14px;
     margin-bottom: 24px;
   }
-  
+
   .logo-lastname {
     display: none;
   }

@@ -181,7 +181,7 @@ Key Features:
     description: "Desarrollo de plataforma web para 'El Merengue', empresa líder en repostería y venta de insumos. Incluye catálogo interactivo, gestión de productos y una interfaz visualmente atractiva diseñada para maximizar la conversión y el alcance publicitario de la marca.",
     descriptionEn: "Development of a web platform for 'El Merengue', a leading pastry and baking supply company. Features an interactive product catalog, product management, and a visually compelling interface designed to maximize brand conversion and advertising reach.",
     images: [
-      '/1.png', '/2.png',
+      '/1.jpg', '/2.jpg',
     ],
     youtubeId: '-2iTnWxOCl4',
     technologies: ['React', 'Node.js', 'UI/UX', 'Catalog'],
@@ -221,7 +221,7 @@ Key Features:
     titleEn: 'CheckCore — Nissan Biometric Clock Centralization',
     description: 'Sistema web para la gestión centralizada de todos los checadores biométricos de Nissan Gasme. Incluye interfaz moderna e intuitiva, automatización del cálculo de faltas y retardos, dashboards con datos clave para dirección, y un sistema de monitoreo con auto-reparación remota que detecta y corrige anomalías en los dispositivos sin necesidad de intervención física del equipo de soporte.\n\nImpacto: Ahorro significativo de horas de trabajo manual, reducción de errores y eliminación de tiempos muertos por fallas en equipos remotos.',
     descriptionEn: 'A web system for the centralized management of all biometric time clocks at Nissan Gasme. Features a modern and intuitive interface, automated calculation of absences and tardiness, executive dashboards with key data, and a remote self-healing monitoring system that detects and corrects device anomalies without requiring physical intervention from the support team.\n\nImpact: Significant savings in manual work hours, reduction of errors, and elimination of downtime caused by remote device failures.',
-    image: '/checkcore_preview.png',
+    image: '/checkcore_preview.jpg',
     youtubeId: 'INVFL_my0KA',
     technologies: ['React', 'Node.js', 'Biometrics', 'Automation', 'Monitoring'],
     technologiesEn: ['React', 'Node.js', 'Biometrics', 'Automation', 'Monitoring'],

@@ -138,6 +138,8 @@ function App() {
   const [visibleSections, setVisibleSections] = useState(new Set(['hero']));
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  // Detect mobile — on mobile we use native CSS scroll-snap instead of JS
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
 
   const navLinksRef = useRef(null);
   const glassIndicatorRef = useRef(null);
@@ -145,6 +147,13 @@ function App() {
   const lastScrollTime = useRef(0);
   const touchStartY = useRef(0);
   const isProjectsInternalScroll = useRef(false);
+
+  // Update isMobile on resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const SECTIONS = getSections(lang);
   const activeSection = SECTIONS[currentSectionIndex]?.id || 'hero';
@@ -250,16 +259,20 @@ function App() {
       }
     };
 
-    wrapper.addEventListener('wheel', handleWheel, { passive: false });
+    // Only apply wheel hijack on desktop
+    if (!isMobile) {
+      wrapper.addEventListener('wheel', handleWheel, { passive: false });
+    }
     return () => wrapper.removeEventListener('wheel', handleWheel);
-  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS]);
+  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS, isMobile]);
 
   // ============================================
-  // TOUCH SUPPORT (swipe detection)
+  // TOUCH SUPPORT (swipe detection — desktop only)
+  // On mobile, CSS scroll-snap handles this natively without jumps
   // ============================================
   useEffect(() => {
     const wrapper = scrollWrapperRef.current;
-    if (!wrapper) return;
+    if (!wrapper || isMobile) return; // Skip on mobile — CSS snap handles it
 
     const handleTouchStart = (e) => {
       touchStartY.current = e.touches[0].clientY;
@@ -306,7 +319,7 @@ function App() {
       wrapper.removeEventListener('touchstart', handleTouchStart);
       wrapper.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS]);
+  }, [currentSectionIndex, selectedProject, navigateToSection, SECTIONS, isMobile]);
 
   // ============================================
   // KEYBOARD SUPPORT
@@ -356,12 +369,18 @@ function App() {
     const wrapper = scrollWrapperRef.current;
     if (!wrapper) return;
 
+    // On mobile, wrapper is always scrollable (CSS scroll-snap handles sections)
+    if (isMobile) {
+      wrapper.classList.remove('projects-scrollable');
+      return;
+    }
+
     if (SECTIONS[currentSectionIndex]?.id === 'projects') {
       wrapper.classList.add('projects-scrollable');
     } else {
       wrapper.classList.remove('projects-scrollable');
     }
-  }, [currentSectionIndex, SECTIONS]);
+  }, [currentSectionIndex, SECTIONS, isMobile]);
 
   // ============================================
   // INITIAL SECTION VISIBILITY
@@ -563,7 +582,7 @@ function App() {
 
               <div className="hero-visual">
                 <div className="hero-avatar-container reveal-scale reveal-delay-1">
-                  <img src="/PerfilIMG.png" alt="Antonio" className="hero-avatar" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
+                  <img src="/PerfilIMG.jpg" alt="Antonio" className="hero-avatar" loading="eager" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' }} />
                 </div>
               </div>
             </div>
