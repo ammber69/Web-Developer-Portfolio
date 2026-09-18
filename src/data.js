@@ -76,6 +76,39 @@ export const categorizedSkills = [
 
 export const projectsData = [
   {
+    id: 105,
+    title: 'Web Corporativa Inteligentes:Net',
+    titleEn: 'Inteligentes:Net Corporate Website',
+    description: `Diseño y desarrollo de la página web corporativa para Inteligentes:Net, empresa especializada en desarrollo de software a medida, consultoría tecnológica y soluciones digitales. La plataforma funciona como carta de presentación digital y canal directo de captación de clientes, comunicando de forma clara y profesional la propuesta de valor, los servicios ofrecidos y los canales de contacto.
+
+Objetivo principal:
+Posicionar a Inteligentes:Net como referente tecnológico confiable, generando una primera impresión de alto impacto que transmita innovación, solidez y profesionalismo desde el primer scroll.
+
+Características clave:
+• Diseño visual premium: Interfaz moderna con estética cuidada, animaciones fluidas y una paleta de colores alineada a la identidad de marca, proyectando confianza y vanguardia tecnológica.
+• Presentación de servicios: Secciones detalladas que comunican con claridad cada solución ofrecida — desde desarrollo web y móvil hasta consultoría e integración de sistemas.
+• Formulario de contacto directo: Canal optimizado para que empresas y clientes potenciales soliciten cotizaciones, agenden reuniones o realicen consultas de manera inmediata.
+• Diseño responsive: Experiencia fluida y adaptativa en cualquier dispositivo — escritorio, tablet y móvil — sin comprometer la calidad visual ni la usabilidad.
+• SEO y rendimiento: Arquitectura optimizada para motores de búsqueda y tiempos de carga rápidos, maximizando la visibilidad orgánica y la retención de visitantes.`,
+    descriptionEn: `Design and development of the corporate website for Inteligentes:Net, a company specializing in custom software development, technology consulting, and digital solutions. The platform serves as a digital business card and a direct client acquisition channel, clearly and professionally communicating the value proposition, services offered, and contact channels.
+
+Main Objective:
+Position Inteligentes:Net as a trusted technology partner, creating a high-impact first impression that conveys innovation, reliability, and professionalism from the very first scroll.
+
+Key Features:
+• Premium Visual Design: A modern interface with refined aesthetics, smooth animations, and a brand-aligned color palette that projects trust and technological leadership.
+• Service Showcase: Detailed sections that clearly communicate each solution offered — from web and mobile development to consulting and systems integration.
+• Direct Contact Form: An optimized channel for businesses and potential clients to request quotes, schedule meetings, or submit inquiries instantly.
+• Responsive Design: A fluid, adaptive experience across all devices — desktop, tablet, and mobile — without compromising visual quality or usability.
+• SEO & Performance: Architecture optimized for search engines and fast load times, maximizing organic visibility and visitor retention.`,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000',
+    youtubeId: 'uA8ubm5r5cE',
+    technologies: ['React', 'Next.js', 'UI/UX', 'SEO', 'Responsive Design'],
+    technologiesEn: ['React', 'Next.js', 'UI/UX', 'SEO', 'Responsive Design'],
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  {
     id: 6,
     title: 'Gestión de Servicios TI (GLPI)',
     titleEn: 'IT Service Management (GLPI)',
