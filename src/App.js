@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, ChevronDown, X, Code, Menu, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, X, Code, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2 } from 'lucide-react';
 import { projectsData, services, categorizedSkills } from './data';
 import "./App.css";
 
@@ -506,8 +506,14 @@ function App() {
           
           <div className="nav-right-controls">
             <LangToggle lang={lang} onToggle={toggleLang} />
-            <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <button 
+              className={`hamburger-btn ${isMobileMenuOpen ? 'is-open' : ''}`} 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            >
+              <span className="hamburger-line line-top" />
+              <span className="hamburger-line line-mid" />
+              <span className="hamburger-line line-bot" />
             </button>
           </div>
         </div>

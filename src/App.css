@@ -491,13 +491,79 @@ img {
   font-size: 0.8rem;
 }
 
-.mobile-menu-btn {
+/* ============================================
+   ANIMATED HAMBURGER BUTTON
+   ============================================ */
+.hamburger-btn {
   display: none;
-  background: none;
-  border: none;
-  color: var(--text-primary);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 113, 227, 0.15);
+  border-radius: 14px;
   cursor: pointer;
+  padding: 0;
+  outline: none;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   z-index: 102;
+}
+
+.hamburger-btn:hover {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.12);
+}
+
+.hamburger-btn.is-open {
+  background: rgba(0, 113, 227, 0.08);
+  border-color: rgba(0, 113, 227, 0.25);
+}
+
+.hamburger-line {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease;
+  left: 50%;
+  margin-left: -10px;
+}
+
+/* Estado cerrado — 3 líneas */
+.line-top { top: 14px; }
+.line-mid { top: 21px; }
+.line-bot { top: 28px; }
+
+/* Estado abierto — se convierte en X */
+.hamburger-btn.is-open .line-top {
+  top: 21px;
+  transform: rotate(45deg);
+  background: var(--accent-color);
+}
+
+.hamburger-btn.is-open .line-mid {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.is-open .line-bot {
+  top: 21px;
+  transform: rotate(-45deg);
+  background: var(--accent-color);
 }
 
 /* Mobile Menu Overlay */
@@ -1675,8 +1741,8 @@ iframe.modal-media {
     display: none;
   }
 
-  .mobile-menu-btn {
-    display: block;
+  .hamburger-btn {
+    display: flex;
   }
 
   .hero-grid {
