@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, X, Code, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2, Globe } from 'lucide-react';
 import { projectsData, services, categorizedSkills } from './data';
 import "./App.css";
@@ -143,11 +143,12 @@ function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  const [visibleSections, setVisibleSections] = useState(new Set(['hero']));
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   // Detect mobile — on mobile we use native CSS scroll-snap instead of JS
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+  // Track which sections have played their stagger animation
+  const animatedSectionsRef = useRef(new Set());
 
   const navLinksRef = useRef(null);
   const glassIndicatorRef = useRef(null);
@@ -163,7 +164,7 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const SECTIONS = getSections(lang);
+  const SECTIONS = useMemo(() => getSections(lang), [lang]);
   const activeSection = SECTIONS[currentSectionIndex]?.id || 'hero';
 
   const toggleLang = useCallback(() => {
@@ -193,12 +194,11 @@ function App() {
     setIsTransitioning(true);
     setTimeout(() => setIsTransitioning(false), 600);
 
-    // Mark section as visible for stagger animations
-    setVisibleSections(prev => {
-      const next = new Set(prev);
-      next.add(SECTIONS[targetIndex].id);
-      return next;
-    });
+    // Trigger stagger animation on target section
+    if (!animatedSectionsRef.current.has(SECTIONS[targetIndex].id)) {
+      animatedSectionsRef.current.add(SECTIONS[targetIndex].id);
+      targetSection.classList.add('section-animated');
+    }
 
     // Scroll to target
     wrapper.scrollTo({
@@ -397,74 +397,50 @@ function App() {
   }, [currentSectionIndex, SECTIONS, isMobile]);
 
   // ============================================
-  // AUTOMATIC SECTION VISIBILITY & SCROLL OBSERVER
+  // STAGGER ANIMATION TRIGGER (cosmetic only — content always visible)
+  // ============================================
+  useEffect(() => {
+    // Hero always gets animated immediately
+    const heroEl = document.getElementById('hero');
+    if (heroEl && !animatedSectionsRef.current.has('hero')) {
+      animatedSectionsRef.current.add('hero');
+      heroEl.classList.add('section-animated');
+    }
+  }, []);
+
+  // ============================================
+  // SCROLL TRACKING (updates active section & progress bar)
   // ============================================
   useEffect(() => {
     const wrapper = scrollWrapperRef.current;
+    if (!wrapper) return;
 
-    // Initialize all sections as visible on mobile to guarantee zero blank screens
-    if (isMobile) {
-      setVisibleSections(new Set(SECTIONS.map(s => s.id)));
-    } else {
-      setVisibleSections(new Set(['hero']));
-    }
-
-    // IntersectionObserver to auto-reveal sections as soon as they enter viewport
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          setVisibleSections((prev) => {
-            if (prev.has(sectionId)) return prev;
-            const next = new Set(prev);
-            next.add(sectionId);
-            return next;
-          });
-        }
-      });
-    }, {
-      root: null,
-      threshold: 0.05
-    });
-
-    SECTIONS.forEach((sec) => {
-      const el = document.getElementById(sec.id);
-      if (el) observer.observe(el);
-    });
-
-    // Scroll listener on wrapper for updating scrollProgress & currentSectionIndex on scroll
     const handleScroll = () => {
-      if (!wrapper) return;
-
       const scrollTop = wrapper.scrollTop;
       const scrollHeight = wrapper.scrollHeight - wrapper.clientHeight;
       if (scrollHeight > 0) {
         setScrollProgress((scrollTop / scrollHeight) * 100);
       }
 
-      // Check active section based on scroll position
-      const viewportHeight = window.innerHeight;
+      // Determine active section
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const wrapperMid = wrapperRect.top + wrapperRect.height * 0.5;
       SECTIONS.forEach((sec, idx) => {
         const el = document.getElementById(sec.id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= viewportHeight * 0.5 && rect.bottom >= viewportHeight * 0.3) {
+          if (rect.top <= wrapperMid && rect.bottom >= wrapperMid * 0.6) {
             setCurrentSectionIndex(idx);
           }
         }
       });
     };
 
-    if (wrapper) {
-      wrapper.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-    }
+    wrapper.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-    return () => {
-      observer.disconnect();
-      if (wrapper) wrapper.removeEventListener('scroll', handleScroll);
-    };
-  }, [SECTIONS, isMobile]);
+    return () => wrapper.removeEventListener('scroll', handleScroll);
+  }, [SECTIONS]);
 
   // ============================================
   // PROJECT MODAL HANDLERS
@@ -614,7 +590,7 @@ function App() {
       {/* Scroll Wrapper */}
       <div className="scroll-wrapper" ref={scrollWrapperRef}>
         {/* Hero Section */}
-        <section id="hero" className={`hero-section fullscreen-section ${visibleSections.has('hero') ? 'section-visible' : ''}`}>
+        <section id="hero" className="hero-section fullscreen-section section-visible">
           <div className="section-inner">
             <div className="hero-grid">
               <div className="hero-text">
@@ -679,7 +655,7 @@ function App() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className={`skills-section fullscreen-section ${visibleSections.has('skills') ? 'section-visible' : ''}`}>
+        <section id="skills" className="skills-section fullscreen-section section-visible">
           <div className="section-inner">
             <div className="section-header reveal-element reveal-delay-0">
               <h2>{lang === 'en' ? 'Services & Technical Skills' : 'Servicios & Habilidades Técnicas'}</h2>
@@ -730,7 +706,7 @@ function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className={`projects-section fullscreen-section ${visibleSections.has('projects') ? 'section-visible' : ''}`}>
+        <section id="projects" className="projects-section fullscreen-section section-visible">
           <div className="section-inner">
             <div className="section-header reveal-element reveal-delay-0">
               <h2>{lang === 'en' ? 'Featured Projects' : 'Proyectos Destacados'}</h2>

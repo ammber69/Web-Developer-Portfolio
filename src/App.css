@@ -150,96 +150,126 @@ img {
 
 /* ============================================
    STAGGERED REVEAL ANIMATIONS
+   Content is ALWAYS VISIBLE by default.
+   section-animated triggers a cosmetic entrance
+   animation via @keyframes — purely decorative.
    ============================================ */
 
-/* All revealable elements start hidden */
+/* Reveal elements — VISIBLE by default */
 .reveal-element {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: 
-    opacity 0.9s var(--apple-ease),
-    transform 0.9s var(--apple-ease);
-  will-change: opacity, transform;
-}
-
-/* When section becomes visible, reveal elements with stagger */
-.section-visible .reveal-element {
   opacity: 1;
   transform: translateY(0);
 }
 
+/* When animated, play a cosmetic stagger entrance */
+.section-animated .reveal-element {
+  animation: revealFadeUp 0.9s var(--apple-ease) both;
+}
+
+@keyframes revealFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Stagger delays */
-.reveal-delay-0 { transition-delay: 0ms; }
-.reveal-delay-1 { transition-delay: 150ms; }
-.reveal-delay-2 { transition-delay: 300ms; }
-.reveal-delay-3 { transition-delay: 450ms; }
-.reveal-delay-4 { transition-delay: 600ms; }
+.section-animated .reveal-delay-0 { animation-delay: 0ms; }
+.section-animated .reveal-delay-1 { animation-delay: 150ms; }
+.section-animated .reveal-delay-2 { animation-delay: 300ms; }
+.section-animated .reveal-delay-3 { animation-delay: 450ms; }
+.section-animated .reveal-delay-4 { animation-delay: 600ms; }
 
 /* Scale reveal variant for the avatar */
 .reveal-scale {
-  opacity: 0;
-  transform: scale(0.85);
-  transition: 
-    opacity 1s var(--apple-ease),
-    transform 1s var(--apple-ease);
-  will-change: opacity, transform;
-}
-
-.section-visible .reveal-scale {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Skill cards individual stagger */
+.section-animated .reveal-scale {
+  animation: revealScaleUp 1s var(--apple-ease) both;
+  animation-delay: 150ms;
+}
+
+@keyframes revealScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Skill cards — VISIBLE by default */
 .skill-card {
-  opacity: 0;
-  transform: translateY(30px) scale(0.96);
+  opacity: 1;
+  transform: translateY(0) scale(1);
   transition: 
-    opacity 0.6s var(--apple-ease),
-    transform 0.6s var(--apple-ease),
     background 0.3s ease,
     box-shadow 0.3s ease,
     border 0.3s ease;
-  will-change: opacity, transform;
 }
 
-.section-visible .skill-card {
+.section-animated .skill-card {
+  animation: revealSkillCard 0.6s var(--apple-ease) both;
+}
+
+@keyframes revealSkillCard {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.section-animated .skill-card:nth-child(1)  { animation-delay: 150ms; }
+.section-animated .skill-card:nth-child(2)  { animation-delay: 200ms; }
+.section-animated .skill-card:nth-child(3)  { animation-delay: 250ms; }
+.section-animated .skill-card:nth-child(4)  { animation-delay: 300ms; }
+.section-animated .skill-card:nth-child(5)  { animation-delay: 350ms; }
+.section-animated .skill-card:nth-child(6)  { animation-delay: 400ms; }
+.section-animated .skill-card:nth-child(7)  { animation-delay: 450ms; }
+.section-animated .skill-card:nth-child(8)  { animation-delay: 500ms; }
+
+/* Project cards — VISIBLE by default */
+.project-card {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-.section-visible .skill-card:nth-child(1)  { transition-delay: 150ms; }
-.section-visible .skill-card:nth-child(2)  { transition-delay: 200ms; }
-.section-visible .skill-card:nth-child(3)  { transition-delay: 250ms; }
-.section-visible .skill-card:nth-child(4)  { transition-delay: 300ms; }
-.section-visible .skill-card:nth-child(5)  { transition-delay: 350ms; }
-.section-visible .skill-card:nth-child(6)  { transition-delay: 400ms; }
-.section-visible .skill-card:nth-child(7)  { transition-delay: 450ms; }
-.section-visible .skill-card:nth-child(8)  { transition-delay: 500ms; }
-
-/* Project cards stagger */
-.project-card {
-  opacity: 0;
-  transform: translateY(50px) scale(0.97);
   transition: 
-    opacity 0.7s var(--apple-ease),
-    transform 0.7s var(--apple-ease),
     box-shadow 0.5s var(--apple-ease),
     border 0.3s ease;
-  will-change: opacity, transform;
 }
 
-.section-visible .project-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.section-animated .project-card {
+  animation: revealProjectCard 0.7s var(--apple-ease) both;
 }
 
-.section-visible .project-card:nth-child(1) { transition-delay: 200ms; }
-.section-visible .project-card:nth-child(2) { transition-delay: 300ms; }
-.section-visible .project-card:nth-child(3) { transition-delay: 400ms; }
-.section-visible .project-card:nth-child(4) { transition-delay: 500ms; }
-.section-visible .project-card:nth-child(5) { transition-delay: 600ms; }
-.section-visible .project-card:nth-child(6) { transition-delay: 700ms; }
+@keyframes revealProjectCard {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.section-animated .project-card:nth-child(1) { animation-delay: 200ms; }
+.section-animated .project-card:nth-child(2) { animation-delay: 300ms; }
+.section-animated .project-card:nth-child(3) { animation-delay: 400ms; }
+.section-animated .project-card:nth-child(4) { animation-delay: 500ms; }
+.section-animated .project-card:nth-child(5) { animation-delay: 600ms; }
+.section-animated .project-card:nth-child(6) { animation-delay: 700ms; }
 
 /* ============================================
    SECTION TRANSITION OVERLAY (cinema feel)
