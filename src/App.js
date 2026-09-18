@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, ChevronDown, X, Code, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, X, Code, MessageSquare, Phone, Mail, Briefcase, MapPin, Building2, Globe } from 'lucide-react';
 import { projectsData, services, categorizedSkills } from './data';
 import "./App.css";
 
@@ -83,18 +83,25 @@ const ProjectCard = React.memo(({ project, index, onClick, lang }) => {
 });
 
 // ============================================
-// LANGUAGE TOGGLE BUTTON
+// LANGUAGE TOGGLE BUTTON (3D Roll Glass Switch)
 // ============================================
-const LangToggle = ({ lang, onToggle }) => (
+const LangToggle = ({ lang, onToggle, isSwitching }) => (
   <button
-    className="lang-toggle"
+    className={`lang-toggle ${isSwitching ? 'switching' : ''}`}
     onClick={onToggle}
     aria-label="Toggle language / Cambiar idioma"
-    title={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a inglés'}
+    title={lang === 'en' ? 'Cambiar a Español' : 'Switch to English'}
   >
-    <span className={`lang-option ${lang === 'en' ? 'lang-active' : ''}`}>EN</span>
-    <span className="lang-divider">|</span>
-    <span className={`lang-option ${lang === 'es' ? 'lang-active' : ''}`}>ES</span>
+    <Globe size={14} className="lang-globe-icon" />
+    <div className="lang-pill-container">
+      <div className={`lang-pill-slider ${lang === 'es' ? 'is-es' : 'is-en'}`} />
+      <div className="lang-option-wrapper">
+        <span className={`lang-option ${lang === 'en' ? 'lang-active' : ''}`}>EN</span>
+      </div>
+      <div className="lang-option-wrapper">
+        <span className={`lang-option ${lang === 'es' ? 'lang-active' : ''}`}>ES</span>
+      </div>
+    </div>
   </button>
 );
 
@@ -131,6 +138,7 @@ const ScrollProgressBar = ({ progress }) => (
 // ============================================
 function App() {
   const [lang, setLang] = useState('en');
+  const [isLangSwitching, setIsLangSwitching] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -159,15 +167,21 @@ function App() {
   const activeSection = SECTIONS[currentSectionIndex]?.id || 'hero';
 
   const toggleLang = useCallback(() => {
-    setLang(prev => prev === 'en' ? 'es' : 'en');
-  }, []);
+    if (isLangSwitching) return;
+    setIsLangSwitching(true);
+    setTimeout(() => {
+      setLang(prev => prev === 'en' ? 'es' : 'en');
+    }, 140);
+    setTimeout(() => {
+      setIsLangSwitching(false);
+    }, 280);
+  }, [isLangSwitching]);
 
   // ============================================
   // NAVIGATE TO SECTION (core function)
   // ============================================
   const navigateToSection = useCallback((targetIndex, smooth = true) => {
     if (targetIndex < 0 || targetIndex >= SECTIONS.length) return;
-    if (targetIndex === currentSectionIndex && !isProjectsInternalScroll.current) return;
 
     const wrapper = scrollWrapperRef.current;
     if (!wrapper) return;
@@ -198,7 +212,7 @@ function App() {
     // Update progress
     const progress = ((targetIndex) / (SECTIONS.length - 1)) * 100;
     setScrollProgress(progress);
-  }, [currentSectionIndex, SECTIONS]);
+  }, [SECTIONS]);
 
   // ============================================
   // SCROLL HIJACKING (wheel event)
@@ -383,11 +397,74 @@ function App() {
   }, [currentSectionIndex, SECTIONS, isMobile]);
 
   // ============================================
-  // INITIAL SECTION VISIBILITY
+  // AUTOMATIC SECTION VISIBILITY & SCROLL OBSERVER
   // ============================================
   useEffect(() => {
-    setVisibleSections(new Set(['hero']));
-  }, []);
+    const wrapper = scrollWrapperRef.current;
+
+    // Initialize all sections as visible on mobile to guarantee zero blank screens
+    if (isMobile) {
+      setVisibleSections(new Set(SECTIONS.map(s => s.id)));
+    } else {
+      setVisibleSections(new Set(['hero']));
+    }
+
+    // IntersectionObserver to auto-reveal sections as soon as they enter viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          setVisibleSections((prev) => {
+            if (prev.has(sectionId)) return prev;
+            const next = new Set(prev);
+            next.add(sectionId);
+            return next;
+          });
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.05
+    });
+
+    SECTIONS.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) observer.observe(el);
+    });
+
+    // Scroll listener on wrapper for updating scrollProgress & currentSectionIndex on scroll
+    const handleScroll = () => {
+      if (!wrapper) return;
+
+      const scrollTop = wrapper.scrollTop;
+      const scrollHeight = wrapper.scrollHeight - wrapper.clientHeight;
+      if (scrollHeight > 0) {
+        setScrollProgress((scrollTop / scrollHeight) * 100);
+      }
+
+      // Check active section based on scroll position
+      const viewportHeight = window.innerHeight;
+      SECTIONS.forEach((sec, idx) => {
+        const el = document.getElementById(sec.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= viewportHeight * 0.5 && rect.bottom >= viewportHeight * 0.3) {
+            setCurrentSectionIndex(idx);
+          }
+        }
+      });
+    };
+
+    if (wrapper) {
+      wrapper.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+    }
+
+    return () => {
+      observer.disconnect();
+      if (wrapper) wrapper.removeEventListener('scroll', handleScroll);
+    };
+  }, [SECTIONS, isMobile]);
 
   // ============================================
   // PROJECT MODAL HANDLERS
@@ -472,7 +549,7 @@ function App() {
   // RENDER
   // ============================================
   return (
-    <div className="app-container">
+    <div className={`app-container ${isLangSwitching ? 'lang-switching' : ''}`}>
       {/* Scroll Progress Bar */}
       <ScrollProgressBar progress={scrollProgress} />
 
@@ -505,7 +582,7 @@ function App() {
           </div>
           
           <div className="nav-right-controls">
-            <LangToggle lang={lang} onToggle={toggleLang} />
+            <LangToggle lang={lang} onToggle={toggleLang} isSwitching={isLangSwitching} />
             <button 
               className={`hamburger-btn ${isMobileMenuOpen ? 'is-open' : ''}`} 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

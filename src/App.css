@@ -443,52 +443,170 @@ img {
   gap: 10px;
 }
 
-/* Language Toggle Pill */
+/* ============================================
+   3D TEXT ROLL & LANGUAGE TRANSITION EFFECT
+   ============================================ */
+/* Transición 3D suave para todos los textos traducibles */
+.hero-title,
+.hero-subtitle,
+.stat-label,
+.section-header h2,
+.section-header p,
+.service-title,
+.service-desc,
+.category-title,
+.skill-name,
+.project-card-title,
+.view-project-label,
+.nav-links a,
+.mobile-menu-content a,
+.btn-primary,
+.btn-secondary {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: 
+    opacity 0.22s var(--apple-ease),
+    filter 0.22s var(--apple-ease),
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Durante el cambio de idioma: giro 3D tipo rodillo en los textos */
+.lang-switching .hero-title,
+.lang-switching .hero-subtitle,
+.lang-switching .stat-label,
+.lang-switching .btn-primary,
+.lang-switching .btn-secondary,
+.lang-switching .section-header h2,
+.lang-switching .section-header p,
+.lang-switching .service-title,
+.lang-switching .service-desc,
+.lang-switching .category-title,
+.lang-switching .skill-name,
+.lang-switching .project-card-title,
+.lang-switching .view-project-label,
+.lang-switching .nav-links a,
+.lang-switching .mobile-menu-content a {
+  opacity: 0.1 !important;
+  filter: blur(6px) !important;
+  transform: perspective(800px) rotateX(-70deg) translateY(-10px) scale(0.96) !important;
+  transform-origin: 50% 0%;
+  transition: 
+    opacity 0.14s ease-out,
+    filter 0.14s ease-out,
+    transform 0.14s ease-out !important;
+}
+
+/* Language Toggle Glass Pill */
 .lang-toggle {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 113, 227, 0.2);
-  border-radius: 20px;
-  padding: 5px 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 113, 227, 0.25);
+  border-radius: 24px;
+  padding: 4px 6px 4px 10px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
   color: var(--text-secondary);
   transition: all 0.3s var(--apple-ease);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   outline: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .lang-toggle:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(0, 113, 227, 0.35);
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.12);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 113, 227, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 113, 227, 0.15);
+  transform: translateY(-1px);
 }
 
-.lang-option {
-  transition: color 0.25s ease, transform 0.25s ease;
+.lang-globe-icon {
+  color: var(--accent-color);
+  transition: transform 0.4s var(--apple-ease);
+}
+
+.lang-toggle.switching .lang-globe-icon {
+  transform: rotate(180deg) scale(1.2);
+}
+
+.lang-pill-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 2px;
+}
+
+.lang-pill-slider {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: calc(50% - 2px);
+  background: var(--accent-color);
+  border-radius: 14px;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+}
+
+.lang-pill-slider.is-en {
+  transform: translateX(0);
+}
+
+.lang-pill-slider.is-es {
+  transform: translateX(100%);
+}
+
+.lang-option-wrapper {
+  perspective: 300px;
   display: inline-block;
 }
 
-.lang-option.lang-active {
-  color: var(--accent-color);
-  font-weight: 800;
-  transform: scale(1.05);
+.lang-option {
+  position: relative;
+  z-index: 2;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  transition: color 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
-.lang-divider {
-  opacity: 0.3;
-  font-weight: 300;
-  font-size: 0.8rem;
+.lang-option.lang-active {
+  color: #ffffff;
+  font-weight: 800;
+  transform: perspective(300px) rotateX(0deg) scale(1.05);
+}
+
+.lang-toggle.switching .lang-option.lang-active {
+  animation: rollLetter3D 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes rollLetter3D {
+  0% {
+    transform: perspective(300px) rotateX(0deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: perspective(300px) rotateX(-90deg) translateY(-6px);
+    opacity: 0.2;
+  }
+  51% {
+    transform: perspective(300px) rotateX(90deg) translateY(6px);
+    opacity: 0.2;
+  }
+  100% {
+    transform: perspective(300px) rotateX(0deg) translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ============================================
@@ -1718,6 +1836,16 @@ iframe.modal-media {
     /* Sin snap */
     scroll-snap-align: unset;
     scroll-snap-stop: unset;
+  }
+
+  /* Forzar visibilidad total en mobile (evita pantallas en blanco si falla JS) */
+  .reveal-element,
+  .reveal-scale,
+  .skill-card,
+  .project-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   .skills-section.fullscreen-section {
