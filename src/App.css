@@ -1678,110 +1678,121 @@ iframe.modal-media {
    MOBILE RESPONSIVENESS
    ============================================ */
 @media (max-width: 768px) {
-  /* ============================================
-     MOBILE: CSS scroll-snap nativo (sin JS)
-     El browser maneja el snap perfectamente,
-     sin saltos ni comportamiento errático.
-     ============================================ */
+
+  /* ── Contenedor global ──────────────────── */
   body {
     overflow: hidden;
+    height: 100dvh;
   }
 
   .app-container {
-    height: 100vh;
     height: 100dvh;
+    overflow: hidden;
   }
 
+  /* ── Scroll wrapper: scroll libre en mobile ─
+     iOS Safari no maneja bien scroll-snap con
+     secciones de altura variable → pantalla en
+     blanco. Usamos scroll normal y libre.      */
   .scroll-wrapper {
-    height: 100vh;
     height: 100dvh;
     overflow-y: scroll;
     overflow-x: hidden;
-    /* CSS scroll-snap nativo — como Apple */
-    scroll-snap-type: y mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
     overscroll-behavior-y: contain;
+    /* SIN scroll-snap — scroll libre */
+    scroll-snap-type: none;
   }
 
-  .scroll-wrapper::-webkit-scrollbar {
-    display: none;
-  }
+  .scroll-wrapper::-webkit-scrollbar { display: none; }
 
-  /* Cada sección hace snap al inicio */
+  /* ── Secciones: altura automática en mobile ─ */
   .fullscreen-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    min-height: auto;
+    height: auto;
+    justify-content: flex-start;
+    padding-top: 0;
+    overflow: visible;
+    /* Sin snap */
+    scroll-snap-align: unset;
+    scroll-snap-stop: unset;
   }
 
-  /* Projects: snap al inicio, scroll interno libre */
+  .skills-section.fullscreen-section {
+    min-height: auto;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
   .projects-section.fullscreen-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
     min-height: auto;
     height: auto;
   }
 
-  /* Skills section scrollable si es necesario en mobile pequeño */
-  .skills-section.fullscreen-section {
-    min-height: 100vh;
-    min-height: 100dvh;
-    height: auto;
-    padding-top: 80px;
+  /* ── Navbar ────────────────────────────── */
+  .nav-links.desktop-only { display: none; }
+  .hamburger-btn { display: flex; }
+  .logo-lastname { display: none; }
+
+  /* ── Hero section ───────────────────────── */
+  .hero-section {
+    min-height: auto;
+    padding-top: 90px;
     padding-bottom: 40px;
-    overflow-y: auto;
-    scroll-snap-align: start;
+    align-items: flex-start;
   }
 
-  /* ============================================
-     HERO MOBILE: Foto PRIMERO, texto después
-     ============================================ */
-  .nav-links.desktop-only {
-    display: none;
+  .section-inner {
+    padding: 32px 20px 40px;
   }
 
-  .hamburger-btn {
-    display: flex;
+  /* Skills section inner con menos padding */
+  .skills-section .section-inner {
+    padding: 40px 16px 40px;
   }
 
   .hero-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 24px;
-    /* Foto primero en mobile */
     display: flex;
     flex-direction: column;
+    text-align: center;
+    gap: 20px;
   }
 
-  /* Foto del hero: va ARRIBA en mobile */
-  .hero-visual {
-    order: -1;
-  }
+  /* Foto del hero: va ARRIBA */
+  .hero-visual { order: -1; }
 
-  /* Foto más compacta en mobile */
   .hero-avatar-container {
-    max-width: 180px;
+    max-width: 160px;
     margin: 0 auto;
   }
 
-  .hero-subtitle {
-    margin: 0 auto 24px;
-    font-size: 1rem;
+  .hero-title {
+    font-size: clamp(1.7rem, 7vw, 2.2rem);
+    margin-bottom: 12px;
   }
 
-  .hero-title {
-    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin: 0 auto 16px;
+    line-height: 1.5;
   }
 
   .hero-stats {
     justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 16px;
   }
 
   .stat-card {
     padding: 8px 12px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.85);
   }
 
   .hero-actions {
@@ -1790,14 +1801,20 @@ iframe.modal-media {
     gap: 10px;
   }
 
-  .section-inner {
-    padding: 80px 20px 40px;
+  /* Ocultar el "Scroll" hint en mobile */
+  .scroll-hint { display: none; }
+
+  /* ── Skills & Services ──────────────────── */
+  .services-grid { grid-template-columns: 1fr; }
+
+  .skills-section .section-header { margin-bottom: 16px; }
+
+  .tech-categories-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
-  /* ============================================
-     PERFORMANCE: Sin backdrop-filter en mobile
-     (es lo que más cuesta en GPU móvil)
-     ============================================ */
+  /* Sin backdrop-filter en cards (GPU performance) */
   .skill-card {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -1810,54 +1827,14 @@ iframe.modal-media {
     background: rgba(255, 255, 255, 0.85);
   }
 
-  .stat-card {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(255, 255, 255, 0.85);
-  }
+  /* ── Modal ──────────────────────────────── */
+  .modal-actions-row { flex-direction: column; }
+  .modal-info-section { padding: 28px 20px 24px; }
+  .modal-info-header { margin-bottom: 20px; padding-bottom: 18px; }
+  .modal-desc-card { padding: 18px 20px; }
+  .modal-description-content { gap: 14px; margin-bottom: 24px; }
 
-  /* Mantener el navbar con blur (es crítico visualmente) */
-
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .skills-category-bento {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .modal-actions-row {
-    flex-direction: column;
-  }
-
-  .modal-info-section {
-    padding: 28px 20px 24px;
-  }
-
-  .modal-info-header {
-    margin-bottom: 20px;
-    padding-bottom: 18px;
-  }
-
-  .modal-desc-card {
-    padding: 18px 20px;
-  }
-
-  .modal-description-content {
-    gap: 14px;
-    margin-bottom: 24px;
-  }
-
-  .logo-lastname {
-    display: none;
-  }
-
-  /* Hide dots on mobile, use navbar instead */
-  .section-dots {
-    display: none;
-  }
-
-  .section-dot-label {
-    display: none;
-  }
+  /* ── Nav indicators ─────────────────────── */
+  .section-dots { display: none; }
+  .section-dot-label { display: none; }
 }
